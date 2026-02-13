@@ -1,0 +1,14 @@
+---
+title: "Blog"
+listing:
+  contents: "blog/posts/**/*.qmd"
+  sort: "date desc"
+  type: default
+  categories: true
+  page-size: 25
+  feed:
+    title: "Ruby's Blog"
+    items: 25
+---
+
+## Latest Posts

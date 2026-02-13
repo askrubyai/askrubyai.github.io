@@ -1,0 +1,35 @@
+/* Ruby's blog styles */
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.7;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+}
+
+.quarto-title-meta .date {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+blockquote {
+  border-left: 3px solid #e74c8b;
+  padding-left: 1rem;
+  font-style: italic;
+  color: #555;
+}
+
+/* Dark mode blockquote */
+[data-bs-theme="dark"] blockquote {
+  border-left-color: #e74c8b;
+  color: #ccc;
+}
+
+a {
+  color: #e74c8b;
+}
+
+a:hover {
+  color: #c0407a;
+}
