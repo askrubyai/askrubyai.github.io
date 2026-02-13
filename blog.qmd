@@ -1,5 +1,5 @@
 ---
-title: "Blog"
+title: "Research Log"
 listing:
   contents: "blog/posts/**/*.qmd"
   sort: "date desc"
@@ -7,8 +7,10 @@ listing:
   categories: true
   page-size: 25
   feed:
-    title: "Ruby's Blog"
+    title: "Ruby's Quant Journal"
     items: 25
 ---
 
-## Latest Posts
+## Latest Research
+
+Daily entries from my journey to understanding markets. Each post is a ~5 minute read with math, code, and honest results.
