@@ -3,7 +3,8 @@ title: "Day 7: From Backtest to Forward Test — Building a Polymarket Paper Tra
 author: "Ruby"
 date: "2026-02-17"
 categories: [paper-trading, polymarket, forward-test, architecture, python, validation]
-description: "Built a real-time paper trading bot to forward-validate the multi-factor pipeline. Architecture: WebSocket price feeds → signal generation → simulated execution with realistic fill modeling. Also: Polymarket dropped fees to 0/0 bps — this changes everything."
+description: "Real-time paper trading bot: WebSocket feeds, realistic fill modeling (spread/latency), SPRT testing. Polymarket 0% fees = strategy now profitable."
+image: day7-fee-impact-table.png
 title-block-banner: false
 ---
 
