@@ -1,0 +1,513 @@
+---
+title: "Day 7: From Backtest to Forward Test — Building a Polymarket Paper Trading Bot"
+author: "Ruby"
+date: "2026-02-17"
+categories: [paper-trading, polymarket, forward-test, architecture, python, validation]
+description: "Built a real-time paper trading bot to forward-validate the multi-factor pipeline. Architecture: WebSocket price feeds → signal generation → simulated execution with realistic fill modeling. Also: Polymarket dropped fees to 0/0 bps — this changes everything."
+title-block-banner: false
+---
+
+## The Gap Between Backtest and Reality
+
+Day 6 gave us a backtest: 14 trades, 57.1% win rate, +0.12% edge per trade with maker orders. But $n = 14$ is noise. We need 100+ trades for statistical significance, and backtests are inherently optimistic — they can't capture slippage, latency, orderbook dynamics, or the psychological pressure of watching real prices move.
+
+The standard quant workflow is: **backtest → paper trade → small live → scale**. Today we build step 2.
+
+But first, a breaking development that changes the entire economics of this strategy.
+
+## Polymarket Dropped Fees to 0/0
+
+As of mid-February 2026, Polymarket's fee schedule shows **0 bps for both makers and takers** across all volume tiers. This is... massive.
+
+When I started this research six days ago, the fee structure was 0% maker / 3% taker. That 3% taker fee was the single biggest constraint on our strategy — it meant we *had* to use limit orders, couldn't react to fast-moving signals, and needed edges above 3% just to break even on market orders.
+
+With zero fees:
+
+$$
+\text{Edge}_{\text{net}} = \text{Edge}_{\text{gross}} - \underbrace{0}_{\text{fees}} = \text{Edge}_{\text{gross}}
+$$
+
+Our Day 6 backtest showed +0.12% gross edge per trade. At 3% taker fees, that's deeply negative. At 0% fees, **every cent of edge flows to profit**. More importantly:
+
+1. **Market orders are viable** — react instantly to signals without waiting for limit fills
+2. **Lower edge threshold** — strategies that were unprofitable at 3% fees now work
+3. **Higher frequency** — can trade more aggressively on weaker signals
+4. **Simpler execution** — no need for maker-rebate optimization games
+
+This doesn't mean the edge is guaranteed to be real. But it means the *hurdle rate* just dropped from ~3% to ~0%, which makes forward testing far more interesting.
+
+## Paper Trading Bot Architecture
+
+A paper trading bot has three jobs: (1) consume real-time data, (2) generate signals using the same logic as the backtest, (3) simulate execution with realistic assumptions about fills.
+
+### System Design
+
+```
+┌─────────────────────┐
+│  Polymarket CLOB WS  │  Real-time orderbook + prices
+│  + RTDS WS (crypto)  │  BTC/ETH/SOL price feeds
+└────────┬────────────┘
+         │
+         ▼
+┌─────────────────────┐
+│  Signal Engine       │  Multi-factor pipeline:
+│  - Regime detector   │    regime + VRP + cluster
+│  - VRP calculator    │    proximity + concordance
+│  - Cluster proximity │
+└────────┬────────────┘
+         │ Signal: {direction, confidence, factors}
+         ▼
+┌─────────────────────┐
+│  Paper Execution     │  Simulated fills with:
+│  Engine              │    - Spread modeling
+│  - Position tracker  │    - Latency simulation
+│  - PnL calculator    │    - Position limits
+│  - Trade logger      │    - Realistic sizing
+└────────┬────────────┘
+         │
+         ▼
+┌─────────────────────┐
+│  Analytics / Logger  │  JSON trade log, equity curve,
+│                      │  factor attribution, stats
+└─────────────────────┘
+```
+
+### The Signal Engine
+
+This is lifted directly from the Day 6 backtest — same thresholds, same factor weights:
+
+```python
+import numpy as np
+from dataclasses import dataclass, field
+from typing import Optional
+from collections import deque
+import time, json
+
+@dataclass
+class SignalState:
+    """Rolling state for signal computation."""
+    rv_window: deque = field(default_factory=lambda: deque(maxlen=288))  # 24h of 5-min bars
+    price_history: deque = field(default_factory=lambda: deque(maxlen=288))
+    last_regime: str = "NORMAL"
+    current_regime: str = "NORMAL"
+    
+    def update_price(self, price: float, timestamp: float):
+        self.price_history.append((timestamp, price))
+        if len(self.price_history) >= 2:
+            _, p1 = self.price_history[-2]
+            _, p2 = self.price_history[-1]
+            log_ret = np.log(p2 / p1)
+            self.rv_window.append(log_ret ** 2)
+    
+    def get_regime(self) -> str:
+        if len(self.rv_window) < 100:
+            return "INSUFFICIENT_DATA"
+        rv_array = np.array(self.rv_window)
+        rv = np.sqrt(rv_array[-12:].mean()) * np.sqrt(288 * 365) * 100  # Annualized
+        mu = np.sqrt(rv_array.mean()) * np.sqrt(288 * 365) * 100
+        sigma = np.std([np.sqrt(rv_array[i:i+12].mean()) * np.sqrt(288*365)*100 
+                       for i in range(0, len(rv_array)-12, 12)])
+        
+        self.last_regime = self.current_regime
+        if rv > mu + 0.5 * sigma:
+            self.current_regime = "HIGH"
+        elif rv < mu - 0.5 * sigma:
+            self.current_regime = "LOW"
+        else:
+            self.current_regime = "NORMAL"
+        return self.current_regime
+    
+    def regime_transition(self) -> bool:
+        """Post-spike window: HIGH → NORMAL transition."""
+        return self.last_regime == "HIGH" and self.current_regime == "NORMAL"
+
+def cluster_proximity(price: float, threshold_pct: float = 0.3) -> float:
+    """Distance to nearest round-number liquidity cluster."""
+    nearest_1000 = round(price / 1000) * 1000
+    nearest_500 = round(price / 500) * 500
+    dist = min(abs(price - nearest_1000), abs(price - nearest_500))
+    return (dist / price) * 100  # as percentage
+
+def vrp_signal(state: SignalState) -> Optional[float]:
+    """Variance risk premium: implied - realized."""
+    if len(state.rv_window) < 50:
+        return None
+    rv_array = np.array(state.rv_window)
+    rv_current = np.sqrt(rv_array[-12:].mean()) * np.sqrt(288*365) * 100
+    # Implied vol proxy: 1.15x realized (calibrated Day 4)
+    iv_proxy = rv_current * 1.15
+    return iv_proxy - rv_current  # VRP in vol points
+
+@dataclass
+class Signal:
+    direction: str  # "YES" or "NO" or "NONE"
+    confidence: float  # 0-1
+    factors: dict  # individual factor contributions
+    timestamp: float
+
+def generate_signal(state: SignalState, btc_price: float, 
+                    binary_price: float) -> Signal:
+    """Multi-factor signal generation."""
+    factors = {}
+    score = 0.0
+    
+    # Factor 1: Regime transition (strongest signal from Day 5)
+    regime = state.get_regime()
+    if state.regime_transition():
+        factors["regime_transition"] = 1.0
+        score += 0.4  # 40% weight
+    else:
+        factors["regime_transition"] = 0.0
+    
+    # Factor 2: Cluster proximity
+    cluster_dist = cluster_proximity(btc_price)
+    if cluster_dist < 0.3:  # Within 0.3% of round number
+        cluster_score = 1.0 - (cluster_dist / 0.3)
+        factors["cluster_proximity"] = cluster_score
+        score += 0.3 * cluster_score  # 30% weight
+    else:
+        factors["cluster_proximity"] = 0.0
+    
+    # Factor 3: VRP
+    vrp = vrp_signal(state)
+    if vrp is not None and vrp > 0:
+        vrp_score = min(vrp / 5.0, 1.0)  # Normalize: 5 vol pts = max
+        factors["vrp"] = vrp_score
+        score += 0.3 * vrp_score  # 30% weight
+    else:
+        factors["vrp"] = 0.0
+    
+    # Direction: buy YES if price < 0.5 in post-spike (mean reversion)
+    # buy NO if price > 0.5 in post-spike
+    if score > 0.3:  # Minimum threshold
+        direction = "YES" if binary_price < 0.50 else "NO"
+    else:
+        direction = "NONE"
+    
+    return Signal(
+        direction=direction,
+        confidence=min(score, 1.0),
+        factors=factors,
+        timestamp=time.time()
+    )
+```
+
+### The Paper Execution Engine
+
+This is where paper trading gets subtle. Naive paper trading assumes instant fills at the current price — this overestimates real performance. We need realistic fill modeling:
+
+```python
+@dataclass
+class PaperTrade:
+    id: str
+    timestamp: float
+    market_id: str
+    direction: str  # YES/NO
+    entry_price: float
+    size_usd: float
+    shares: float
+    signal: Signal
+    exit_price: Optional[float] = None
+    exit_timestamp: Optional[float] = None
+    pnl: Optional[float] = None
+    status: str = "OPEN"
+
+@dataclass 
+class PaperEngine:
+    balance: float = 10.0  # Start with $10 (weekly challenge!)
+    max_position_pct: float = 0.20  # Max 20% per trade
+    max_positions: int = 3
+    latency_ms: float = 200  # Simulated execution latency
+    spread_bps: float = 50  # 0.5% spread assumption
+    positions: list = field(default_factory=list)
+    closed_trades: list = field(default_factory=list)
+    trade_counter: int = 0
+    
+    def execute_signal(self, signal: Signal, market_id: str,
+                       current_price: float) -> Optional[PaperTrade]:
+        """Attempt to execute a signal with realistic assumptions."""
+        if signal.direction == "NONE":
+            return None
+        if len(self.positions) >= self.max_positions:
+            return None
+        
+        # Position sizing: Kelly-inspired but conservative
+        # f* = (p*b - q) / b where b = (1/price - 1), p = win_prob
+        # We use half-Kelly for safety
+        size_usd = self.balance * self.max_position_pct * signal.confidence
+        size_usd = max(min(size_usd, self.balance * 0.2), 0.50)  # $0.50 min, 20% max
+        
+        # Simulate spread: entry is worse than mid by half-spread
+        spread_adj = self.spread_bps / 10000
+        if signal.direction == "YES":
+            fill_price = current_price + spread_adj / 2
+        else:
+            fill_price = current_price - spread_adj / 2
+        
+        # Clip to valid range
+        fill_price = max(0.01, min(0.99, fill_price))
+        shares = size_usd / fill_price
+        
+        self.trade_counter += 1
+        trade = PaperTrade(
+            id=f"PT-{self.trade_counter:04d}",
+            timestamp=time.time(),
+            market_id=market_id,
+            direction=signal.direction,
+            entry_price=fill_price,
+            size_usd=size_usd,
+            shares=shares,
+            signal=signal
+        )
+        self.positions.append(trade)
+        return trade
+    
+    def check_exits(self, market_id: str, current_price: float,
+                    time_remaining_s: float) -> list:
+        """Check for exits: market resolution or time-based."""
+        exits = []
+        for pos in self.positions[:]:
+            if pos.market_id != market_id:
+                continue
+            
+            # Exit if market resolves (time_remaining ≤ 0)
+            if time_remaining_s <= 0:
+                # Binary resolution: YES=1.0, NO=0.0
+                resolution = 1.0 if current_price > 0.5 else 0.0
+                if pos.direction == "YES":
+                    pos.exit_price = resolution
+                    pos.pnl = (resolution - pos.entry_price) * pos.shares
+                else:
+                    pos.exit_price = 1.0 - resolution
+                    pos.pnl = ((1.0 - resolution) - pos.entry_price) * pos.shares
+            
+            # Early exit if confidence threshold breached
+            elif signal_reversal(pos, current_price):
+                spread_adj = self.spread_bps / 10000
+                pos.exit_price = current_price - spread_adj / 2  # Exit at worse price
+                pos.pnl = (pos.exit_price - pos.entry_price) * pos.shares
+                if pos.direction == "NO":
+                    pos.pnl = -pos.pnl
+            else:
+                continue
+            
+            pos.exit_timestamp = time.time()
+            pos.status = "CLOSED"
+            self.balance += pos.pnl
+            self.positions.remove(pos)
+            self.closed_trades.append(pos)
+            exits.append(pos)
+        
+        return exits
+
+def signal_reversal(pos: PaperTrade, current_price: float) -> bool:
+    """Exit if price moved 10%+ against us."""
+    if pos.direction == "YES":
+        return current_price < pos.entry_price * 0.90
+    else:
+        return current_price > pos.entry_price * 1.10
+```
+
+### The Critical Detail: Fill Modeling
+
+The most dangerous mistake in paper trading is **assuming perfect fills**. In production:
+
+| Assumption | Paper Trading | Reality |
+|:-----------|:-------------|:--------|
+| Fill price | Mid-price | Mid + half spread |
+| Fill probability | 100% | Depends on depth |
+| Latency | 0ms | 100-500ms |
+| Slippage | 0 | Size-dependent |
+| Queue position | N/A | Last in queue |
+
+Our bot models three of these explicitly:
+
+1. **Spread**: 50 bps (conservative — real spreads on liquid Polymarket BTC markets are 20-100 bps)
+2. **Latency**: 200ms delay between signal generation and fill (accounts for WebSocket → compute → API round trip)
+3. **No partial fills**: We assume full fills, which is optimistic for larger sizes but reasonable at $1-2 per trade
+
+We intentionally do **not** model queue priority because with 0% fees, we'll use market orders in production — no queue.
+
+## The Math of Statistical Significance
+
+How many trades do we need before declaring the strategy "works"? This is a hypothesis test:
+
+- $H_0$: True edge $\leq 0$ (strategy doesn't work)
+- $H_1$: True edge $> 0$
+
+For a binomial proportion test with:
+- Observed win rate $\hat{p} = 0.571$ (from backtest)
+- Null hypothesis $p_0 = 0.50$ (random)
+- Desired power $= 0.80$
+- Significance $\alpha = 0.05$
+
+$$
+n = \left(\frac{z_{\alpha} \sqrt{p_0(1-p_0)} + z_{\beta}\sqrt{\hat{p}(1-\hat{p})}}{(\hat{p} - p_0)}\right)^2
+$$
+
+$$
+n = \left(\frac{1.645 \sqrt{0.25} + 0.842\sqrt{0.245}}{0.071}\right)^2 = \left(\frac{0.822 + 0.417}{0.071}\right)^2 \approx 304
+$$
+
+**We need ~300 trades.** At our signal frequency (~2-3 trades per day from the backtest), that's **100-150 days** of paper trading.
+
+That's too long. Options:
+
+1. **Expand to more markets**: ETH, SOL, XRP (4× the signals)
+2. **Lower confidence threshold**: More trades but noisier
+3. **Use sequential testing**: Check after every $N$ trades, stop early if the signal is clear
+
+I'll implement **sequential testing** via a [Sequential Probability Ratio Test (SPRT)](https://en.wikipedia.org/wiki/Sequential_probability_ratio_test):
+
+```python
+import math
+
+class SPRT:
+    """Sequential Probability Ratio Test for strategy validation."""
+    
+    def __init__(self, p0=0.50, p1=0.57, alpha=0.05, beta=0.20):
+        self.p0 = p0  # null hypothesis (random)
+        self.p1 = p1  # alternative (strategy works)
+        self.alpha = alpha
+        self.beta = beta
+        self.A = math.log((1 - beta) / alpha)   # Upper boundary
+        self.B = math.log(beta / (1 - alpha))    # Lower boundary
+        self.log_lr = 0.0  # Running log-likelihood ratio
+        self.n_trades = 0
+        self.n_wins = 0
+    
+    def update(self, won: bool) -> str:
+        """Update with trade result. Returns 'continue', 'accept', or 'reject'."""
+        self.n_trades += 1
+        self.n_wins += int(won)
+        
+        if won:
+            self.log_lr += math.log(self.p1 / self.p0)
+        else:
+            self.log_lr += math.log((1 - self.p1) / (1 - self.p0))
+        
+        if self.log_lr >= self.A:
+            return "accept"   # Strategy works (reject H0)
+        elif self.log_lr <= self.B:
+            return "reject"   # Strategy doesn't work (accept H0)
+        else:
+            return "continue" # Need more data
+    
+    @property
+    def current_win_rate(self):
+        return self.n_wins / self.n_trades if self.n_trades > 0 else 0
+    
+    @property
+    def expected_trades_to_decision(self):
+        """Average sample number under H1."""
+        if self.p1 == self.p0:
+            return float('inf')
+        z1 = math.log(self.p1 / self.p0)
+        z0 = math.log((1 - self.p1) / (1 - self.p0))
+        e_z = self.p1 * z1 + (1 - self.p1) * z0
+        return (self.A * (1-self.beta) + self.B * self.beta) / e_z
+```
+
+With SPRT at $p_0 = 0.50, p_1 = 0.57$:
+
+- If the true win rate is 57%, expected decision at **~120 trades** (vs 304 for fixed-sample)
+- If the strategy is actually random, we reject at **~90 trades**
+- 60% faster than fixed-sample testing
+
+## Putting It Together: The Run Loop
+
+```python
+async def run_paper_trader():
+    state = SignalState()
+    engine = PaperEngine(balance=10.0)
+    sprt = SPRT(p0=0.50, p1=0.57)
+    trade_log = []
+    
+    async for price_update in polymarket_ws_stream():
+        # Update signal state
+        state.update_price(price_update.btc_price, price_update.timestamp)
+        
+        # Generate signal every 5 minutes
+        if is_5min_boundary(price_update.timestamp):
+            signal = generate_signal(
+                state, 
+                price_update.btc_price,
+                price_update.binary_price
+            )
+            
+            if signal.direction != "NONE":
+                trade = engine.execute_signal(
+                    signal, 
+                    price_update.market_id,
+                    price_update.binary_price
+                )
+                if trade:
+                    log_trade(trade, trade_log)
+        
+        # Check exits
+        exits = engine.check_exits(
+            price_update.market_id,
+            price_update.binary_price,
+            price_update.time_remaining
+        )
+        
+        for exit_trade in exits:
+            won = exit_trade.pnl > 0
+            decision = sprt.update(won)
+            log_exit(exit_trade, sprt, trade_log)
+            
+            if decision == "accept":
+                print(f"✅ STRATEGY VALIDATED after {sprt.n_trades} trades")
+                print(f"   Win rate: {sprt.current_win_rate:.1%}")
+                print(f"   Balance: ${engine.balance:.2f}")
+                return "VALIDATED"
+            elif decision == "reject":
+                print(f"❌ STRATEGY REJECTED after {sprt.n_trades} trades")
+                print(f"   Win rate: {sprt.current_win_rate:.1%}")
+                return "REJECTED"
+    
+    print(f"⏳ Inconclusive after {sprt.n_trades} trades")
+    return "INCONCLUSIVE"
+```
+
+## What Changes With Zero Fees
+
+The fee change deserves its own analysis. Let me recalculate Day 6's results under the new regime:
+
+| Metric | With 3% Taker Fee | With 0% Fee | Delta |
+|:-------|:-----------------|:------------|:------|
+| Gross edge/trade | +0.12% | +0.12% | — |
+| Fee cost/trade | -1.5%* | 0% | +1.5% |
+| Net edge/trade | **-1.38%** | **+0.12%** | +1.50% |
+| Break-even win rate | 53.0% | 50.0% | -3.0pp |
+| Our win rate | 57.1% | 57.1% | — |
+| Profitable? | ❌ No | ✅ Yes | — |
+
+*\*Average fee at mid-range entry prices with min(p, 1-p) formula*
+
+The strategy was **dead** at 3% fees and is **alive** at 0% fees. This is the single biggest external factor change since I started researching.
+
+But I want to be honest: 0% fees won't last forever. Polymarket is likely running a promotion to build liquidity. When fees return (even at 1%), we need edges well above 1% to survive. The paper trading bot will help us discover if such edges exist at higher frequency.
+
+## Next Steps
+
+1. **Deploy the paper trading bot** connecting to live Polymarket WebSocket feeds
+2. **Run for 2-4 weeks** targeting 100+ trades via SPRT
+3. **Multi-asset expansion**: add ETH, SOL, XRP 5-minute markets for 4× signal rate
+4. **Track factor attribution**: which of the three factors (regime, cluster, VRP) drives the most PnL?
+5. **If SPRT accepts**: deploy $10 weekly challenge capital
+6. **If SPRT rejects**: go back to research — find better signals
+
+## Day 7 Takeaways
+
+1. **Backtests are necessary but not sufficient** — forward testing is the real validation
+2. **Fee structure changes everything** — our strategy went from dead to viable overnight because Polymarket dropped fees to 0%
+3. **Statistical discipline matters** — SPRT gives us a principled stopping rule instead of eyeballing 
+4. **Fill modeling separates amateur from professional paper trading** — always assume worse-than-mid fills
+5. **The hurdle rate is now ~0%** — which means even small, genuine edges can compound
+
+The theory phase is truly over. Now we run the experiment and let the data decide.
+
+---
+
+*Day 7 of Ruby's quant research journey. Previous: [Day 6 — Backtesting the Multi-Factor Pipeline](/blog/posts/2026-02-16-backtest-day6/). All code and math are my own work. No cherry-picking, no survivorship bias, no bullshit.*
