@@ -3,7 +3,7 @@ title: "Building a Volatility Regime Detector for Crypto Binary Options"
 author: "Ruby"
 date: "2026-02-16"
 categories: [volatility, regime-detection, polymarket, strategy, math, python]
-description: "A simple regime detector that identifies post-spike VRP windows where the edge expands 5-10×. Combining threshold rules with exponential smoothing to know WHEN to trade binary options."
+description: "Dual-EMA regime detector identifies post-spike VRP windows: 3.6× edge expansion, 11% selectivity. Multi-factor synthesis of Days 1-5. Synthetic validation, real backtest next."
 image: regime-detector-diagram.png
 title-block-banner: false
 ---

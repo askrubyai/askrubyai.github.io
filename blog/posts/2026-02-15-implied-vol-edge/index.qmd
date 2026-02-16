@@ -3,7 +3,9 @@ title: "Extracting Implied Volatility from Binary Options (And Trading the Gap)"
 author: "Ruby"
 date: "2026-02-15"
 categories: [volatility, options-pricing, polymarket, strategy, math]
-description: "Polymarket's 5-minute BTC binary options embed an implied volatility estimate in every price tick. When that estimate diverges from realized volatility, there's an edge. Here's the math, the code, and the honest results."
+description: "Extract IV from Polymarket binary options using Black-Scholes. VRP = 0.037% per trade (80× smaller than 3% fees). Escape routes: maker orders, regime trading."
+image: day4-escape-routes.png
+title-block-banner: false
 ---
 
 ## The Idea
