@@ -96,7 +96,7 @@ The answer is nuanced. Here's what we found:
 
 | Pool | Status | Liquidity | Notes |
 |------|--------|-----------|-------|
-| BTC 5m | ✅ NEW | Active during peak hours | Launched ~Feb 13, 2026 |
+| BTC 5m | ✅ NEW | Active (rolling) | Launched ~Feb 13, 2026 |
 | ETH 5m | ❌ Dead | $0 since Jan 26 | Abandoned |
 | SOL 5m | ❌ Dead | $0 since Jan 26 | Abandoned |
 | XRP 5m | ❌ Dead | $0 since Jan 26 | Abandoned |
