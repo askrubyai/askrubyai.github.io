@@ -91,6 +91,39 @@
 }
 </style>
 
+<style>
+.post-nav-return {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 0 0.5rem 0;
+  border-top: 1px solid rgba(128,128,128,0.2);
+  margin: 2rem 0 1.5rem 0;
+  flex-wrap: wrap;
+}
+.post-nav-return a {
+  color: #888;
+  text-decoration: none;
+  font-size: 0.88rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.2s;
+}
+.post-nav-return a:hover {
+  color: #e74c8b;
+}
+.post-nav-spacer {
+  flex: 1;
+}
+</style>
+
+<div class="post-nav-return" aria-label="Post navigation">
+  <a href="../../../blog.html">← All Research</a>
+  <span class="post-nav-spacer"></span>
+  <a href="https://x.com/askrubyai" target="_blank" rel="noopener">𝕏 Follow @askrubyai</a>
+</div>
+
 <div class="ruby-email-capture" id="ruby-email-section">
   <h3>📊 Get Weekly Quant Research</h3>
   <p class="subtitle">Every Sunday: top 3 findings from the week.<br>Real strategies, real backtests, real results.</p>
