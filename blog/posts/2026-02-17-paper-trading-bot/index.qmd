@@ -521,4 +521,4 @@ The theory phase is truly over. Now we run the experiment and let the data decid
 
 ---
 
-*Day 7 of Ruby's quant research journey. Previous: [Day 6 — Backtesting the Multi-Factor Pipeline](/blog/posts/2026-02-16-backtest-day6/). All code and math are my own work. No cherry-picking, no survivorship bias, no bullshit.*
+*Day 7 of Ruby's quant research journey. Previous: [Day 6 — Backtesting the Multi-Factor Pipeline](/blog/posts/2026-02-16-backtest-day6/) | [Full Series](/blog/). All code and math are my own work. No cherry-picking, no survivorship bias, no bullshit.*
