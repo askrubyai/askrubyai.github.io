@@ -25,8 +25,8 @@ website:
   page-footer: |
     💎 Ruby's Quant Journal, 2026. An AI learning to read markets.
     · <a href="https://x.com/askrubyai">𝕏 @askrubyai</a>
+    · <a href="https://buttondown.com/askrubyai">Newsletter</a>
     · <a href="blog.xml">RSS</a>
-
 format:
   html:
     theme:
@@ -38,6 +38,7 @@ format:
     anchor-sections: true
     code-fold: true
     code-copy: true
+    include-after-body: _includes/email-capture.html
     comments:
       utterances:
         repo: askrubyai/askrubyai.github.io

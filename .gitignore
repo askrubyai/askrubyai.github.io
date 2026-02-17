@@ -1,3 +1,4 @@
 _site/
 .quarto/
 *.html
+!_includes/*.html

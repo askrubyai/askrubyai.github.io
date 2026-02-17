@@ -1,0 +1,133 @@
+<style>
+.ruby-email-capture {
+  background: linear-gradient(135deg, rgba(231, 76, 139, 0.08) 0%, rgba(26, 26, 46, 0.6) 100%);
+  border: 1px solid rgba(231, 76, 139, 0.3);
+  border-radius: 12px;
+  padding: 2rem 2rem 1.5rem 2rem;
+  margin: 3rem 0 1rem 0;
+  text-align: center;
+  font-family: inherit;
+}
+.ruby-email-capture h3 {
+  color: #e74c8b;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.ruby-email-capture p.subtitle {
+  color: #888;
+  margin: 0 0 1.5rem 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.ruby-email-form {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 420px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.ruby-email-form input[type="email"] {
+  flex: 1;
+  min-width: 220px;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(231, 76, 139, 0.4);
+  background: rgba(0, 0, 0, 0.2);
+  color: inherit;
+  font-size: 0.93rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.ruby-email-form input[type="email"]:focus {
+  border-color: #e74c8b;
+  box-shadow: 0 0 0 3px rgba(231, 76, 139, 0.15);
+}
+.ruby-email-form button[type="submit"] {
+  padding: 0.7rem 1.4rem;
+  background: #e74c8b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.93rem;
+  transition: background 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+.ruby-email-form button[type="submit"]:hover {
+  background: #d63a78;
+  transform: translateY(-1px);
+}
+.ruby-email-form button[type="submit"]:active {
+  transform: translateY(0);
+}
+.ruby-email-capture p.fine-print {
+  color: #666;
+  margin: 1rem 0 0 0;
+  font-size: 0.78rem;
+}
+.ruby-email-success {
+  display: none;
+  color: #4caf82;
+  margin: 0.75rem 0 0 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+</style>
+
+<div class="ruby-email-capture" id="ruby-email-section">
+  <h3>📊 Get Weekly Quant Research</h3>
+  <p class="subtitle">Every Sunday: top 3 findings from the week.<br>Real strategies, real backtests, real results.</p>
+  <form
+    action="https://buttondown.com/api/emails/embed-subscribe/askrubyai"
+    method="post"
+    class="ruby-email-form"
+    id="ruby-subscribe-form"
+  >
+    <input
+      type="email"
+      name="email"
+      id="ruby-email-input"
+      placeholder="you@example.com"
+      required
+      autocomplete="email"
+    />
+    <button type="submit" id="ruby-subscribe-btn">Subscribe →</button>
+  </form>
+  <p class="ruby-email-success" id="ruby-success-msg">✅ You're in! Check your inbox to confirm.</p>
+  <p class="fine-print">No spam. Unsubscribe anytime. Powered by <a href="https://buttondown.com" target="_blank" rel="noopener" style="color: #888;">Buttondown</a>.</p>
+</div>
+
+<script>
+(function() {
+  var form = document.getElementById('ruby-subscribe-form');
+  if (!form) return;
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var email = document.getElementById('ruby-email-input').value;
+    if (!email || !email.includes('@') || !email.includes('.')) {
+      document.getElementById('ruby-email-input').style.borderColor = '#e74c4c';
+      return;
+    }
+    var btn = document.getElementById('ruby-subscribe-btn');
+    btn.textContent = 'Subscribing...';
+    btn.disabled = true;
+    var formData = new FormData();
+    formData.append('email', email);
+    fetch('https://buttondown.com/api/emails/embed-subscribe/askrubyai', {
+      method: 'POST',
+      body: formData,
+      mode: 'no-cors'
+    }).then(function() {
+      form.style.display = 'none';
+      document.getElementById('ruby-success-msg').style.display = 'block';
+    }).catch(function() {
+      // no-cors always resolves, this handles network failures
+      btn.textContent = 'Subscribe →';
+      btn.disabled = false;
+    });
+  });
+})();
+</script>
