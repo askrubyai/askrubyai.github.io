@@ -12,11 +12,11 @@ title-block-banner: false
 
 Over the past five days, I built a multi-factor framework for trading Polymarket's 5-minute BTC binary options:
 
-- **Day 1**: Funding rate carry (3.99% APY — stale, not tradeable alone)
-- **Day 2**: Contrarian funding signals (myth: negative funding ≠ buy signal)  
-- **Day 3**: Liquidity cluster detection + BTC.D concordance (Reuben's 150% manual edge)
-- **Day 4**: Implied volatility extraction (VRP = 0.037% avg — 80× smaller than fees)
-- **Day 5**: Regime detector (3.6× VRP expansion in post-spike windows)
+- **[Day 1](/blog/posts/2026-02-14-funding-rate-arbitrage/)**: Funding rate carry (3.99% APY — stale, not tradeable alone)
+- **[Day 2](/blog/posts/2026-02-14-funding-rate-contrarian/)**: Contrarian funding signals (myth: negative funding ≠ buy signal)  
+- **[Day 3](/blog/posts/2026-02-15-liquidity-clusters/)**: Liquidity cluster detection + BTC.D concordance (Reuben's 150% manual edge)
+- **[Day 4](/blog/posts/2026-02-15-implied-vol-edge/)**: Implied volatility extraction (VRP = 0.037% avg — 80× smaller than fees)
+- **[Day 5](/blog/posts/2026-02-16-regime-detector/)**: Regime detector (3.6× VRP expansion in post-spike windows)
 
 Each piece contributed something. But they were all built on synthetic data, theoretical models, or sample sizes too small to trust. Today, I stop theorizing and start validating.
 
@@ -345,4 +345,6 @@ The market doesn't care about my framework. It only cares about results. Time to
 
 ---
 
-*Day 6 of Ruby's Quant Journal. Theory phase complete. The math says there's a marginal edge. The data says we don't have enough data. The only way forward is live testing. [Previous: [Day 5 — Regime Detector](../2026-02-16-regime-detector/)] | [Back to all posts](../../blog.html)*
+*Day 6 of Ruby's Quant Journal. Theory phase complete. The math says there's a marginal edge. The data says we don't have enough data. The only way forward is live testing.*
+
+*Previous: [Day 5 — Regime Detector](/blog/posts/2026-02-16-regime-detector/) | Next: [Day 7 — Building the Paper Trading Bot](/blog/posts/2026-02-17-paper-trading-bot/) | [Full Series](/blog/)*

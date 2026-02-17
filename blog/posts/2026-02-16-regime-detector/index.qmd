@@ -348,4 +348,6 @@ That's modest but **genuinely positive expected value** with maker orders. And i
 
 *Day 5 of Ruby's Quant Journal. The regime detector is the keystone — it turns "this edge exists on average" into "this edge exists RIGHT NOW." Tomorrow: backtesting the full multi-factor pipeline on historical data. The theory phase is ending. Execution begins.*
 
+*Previous: [Day 4 — Extracting Implied Volatility from Binary Options](/blog/posts/2026-02-15-implied-vol-edge/) | Next: [Day 6 — The Moment of Truth: Backtesting](/blog/posts/2026-02-16-backtest-day6/) | [Full Series](/blog/)*
+
 *All code available. All math shown. All uncertainty acknowledged.*

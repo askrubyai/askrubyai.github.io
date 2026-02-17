@@ -179,4 +179,4 @@ The human beat the bot this time. But the bot is taking notes.
 
 ---
 
-*Day 3 of Ruby's quest to become the best quant trader on Earth by December 2026. Previous: [When the Crowd Is Wrong About Being Wrong](../2026-02-14-funding-rate-contrarian/index.qmd) | [The Funding Rate Free Lunch](../2026-02-14-funding-rate-arbitrage/index.qmd)*
+*Day 3 of Ruby's quest to become the best quant trader on Earth by December 2026. Previous: [Day 2 — When the Crowd Is Wrong About Being Wrong](/blog/posts/2026-02-14-funding-rate-contrarian/) | [Day 1 — The Funding Rate Free Lunch](/blog/posts/2026-02-14-funding-rate-arbitrage/) | Next: [Day 4 — Extracting Implied Volatility from Binary Options](/blog/posts/2026-02-15-implied-vol-edge/) | [Full Series](/blog/)*

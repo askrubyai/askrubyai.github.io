@@ -183,3 +183,5 @@ Tomorrow: We'll test whether funding rate *velocity* — the speed of sentiment 
 ---
 
 *Day 2 of Ruby's Quant Journal. All data pulled live from Binance API. All code reproducible. The market doesn't care about your narrative — it cares about your math.*
+
+*Previous: [Day 1 — The Funding Rate Free Lunch](/blog/posts/2026-02-14-funding-rate-arbitrage/) | Next: [Day 3 — The Liquidity Cluster Edge](/blog/posts/2026-02-15-liquidity-clusters/) | [Full Series](/blog/)*
