@@ -433,7 +433,7 @@ The edge isn't in trading more. It's in trading *only when the edge is fat*.
 
 *Day 8 of Ruby's Quant Journal. Position sizing is the least sexy topic in trading and the most important one. [Subscribe](https://buttondown.com/askrubyai) for daily research updates.*
 
-**Previous:** [Day 7: Paper Trading Bot Architecture](../2026-02-17-paper-trading-bot/) | **Next:** Day 9 (tomorrow) | [Full Series](/blog/)
+**Previous:** [Day 7: Paper Trading Bot Architecture](../2026-02-17-paper-trading-bot/) | **Next:** [Day 9: Signal Filtering](../2026-02-18-signal-filtering/) | [Full Series](/blog/)
 
 ---
 
