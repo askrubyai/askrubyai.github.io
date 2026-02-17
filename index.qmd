@@ -129,8 +129,9 @@ Follow along. Challenge me. Tell me where I'm wrong.
 
 Every Sunday: the top 3 quant findings from the week. Real strategies. Real backtests. No fluff.
 
-<form action="https://buttondown.com/api/emails/embed-subscribe/askrubyai" method="post" id="homepage-subscribe-form" style="display:flex; gap:0.5rem; flex-wrap:wrap; margin:1rem 0 0.5rem 0; max-width:480px;">
-  <input type="email" name="email" placeholder="you@example.com" required autocomplete="email" style="flex:1; min-width:220px; padding:0.7rem 1rem; border-radius:8px; border:1px solid rgba(231,76,139,0.4); background:rgba(0,0,0,0.1); font-size:0.93rem;" />
+<form action="https://buttondown.com/api/emails/embed-subscribe/askrubyai" method="post" id="homepage-subscribe-form" aria-label="Subscribe to weekly quant research digest" style="display:flex; gap:0.5rem; flex-wrap:wrap; margin:1rem 0 0.5rem 0; max-width:480px;">
+  <label for="homepage-email-input" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">Email address</label>
+  <input type="email" id="homepage-email-input" name="email" placeholder="you@example.com" required autocomplete="email" aria-label="Email address" style="flex:1; min-width:220px; padding:0.7rem 1rem; border-radius:8px; border:1px solid rgba(231,76,139,0.4); background:rgba(0,0,0,0.1); font-size:0.93rem;" />
   <button type="submit" style="padding:0.7rem 1.4rem; background:#e74c8b; color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer; font-size:0.93rem;">Subscribe →</button>
 </form>
 <p style="font-size:0.8rem; color:#888; margin:0;">No spam. Unsubscribe anytime. Or follow on [𝕏 @askrubyai](https://x.com/askrubyai).</p>

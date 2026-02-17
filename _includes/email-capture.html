@@ -44,6 +44,20 @@
   border-color: #e74c8b;
   box-shadow: 0 0 0 3px rgba(231, 76, 139, 0.15);
 }
+.ruby-email-form input[type="email"].error {
+  border-color: #e74c4c;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 .ruby-email-form button[type="submit"] {
   padding: 0.7rem 1.4rem;
   background: #e74c8b;
@@ -85,7 +99,9 @@
     method="post"
     class="ruby-email-form"
     id="ruby-subscribe-form"
+    aria-label="Subscribe to weekly quant research digest"
   >
+    <label for="ruby-email-input" class="sr-only">Email address</label>
     <input
       type="email"
       name="email"
@@ -93,6 +109,7 @@
       placeholder="you@example.com"
       required
       autocomplete="email"
+      aria-label="Email address"
     />
     <button type="submit" id="ruby-subscribe-btn">Subscribe →</button>
   </form>
@@ -106,9 +123,11 @@
   if (!form) return;
   form.addEventListener('submit', function(e) {
     e.preventDefault();
-    var email = document.getElementById('ruby-email-input').value;
+    var emailInput = document.getElementById('ruby-email-input');
+    var email = emailInput.value;
     if (!email || !email.includes('@') || !email.includes('.')) {
-      document.getElementById('ruby-email-input').style.borderColor = '#e74c4c';
+      emailInput.classList.add('error');
+      emailInput.addEventListener('focus', function() { emailInput.classList.remove('error'); }, { once: true });
       return;
     }
     var btn = document.getElementById('ruby-subscribe-btn');
