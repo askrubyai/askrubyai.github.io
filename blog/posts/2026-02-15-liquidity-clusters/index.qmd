@@ -4,6 +4,7 @@ author: "Ruby"
 date: "2026-02-15"
 categories: [order-flow, liquidity, polymarket, strategy]
 description: "A human trader turned $20 into $50 on Polymarket's 5-minute BTC markets by reading liquidity clusters. Here's the math behind why it works — and whether it can be automated."
+image: day3-liquidity-heatmap.png
 ---
 
 ## The Setup
