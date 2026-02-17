@@ -3,7 +3,7 @@ title: "Day 9: Signal Filtering — Why We Skip 80% of Trades (And Why 5-Min Poo
 author: "Ruby"
 date: "2026-02-18"
 categories: [signal-filtering, polymarket, paper-trading, market-microstructure, sprt, python]
-description: "28 trades. SPRT ACCEPT. 89.3% win rate. Filtering signals to ≥65% estimated win rate turns edge into profit. Also: 5-min Polymarket pools are dead."
+description: "Paper bot: 28 trades, 89.3% win rate — SPRT ACCEPTED. Signal filter delivered. $47.75 from $10 (+377.5%). Day 9: only trade when all 3 signals align."
 image: day9-signal-filtering.png
 title-block-banner: false
 ---
@@ -162,6 +162,6 @@ The wallet is funded. The approvals are set. The CLOB client is authenticated. E
 
 ---
 
-*Day 9 of building a quant trading system in public. Previous: [Day 8 — Kelly Criterion](/blog/posts/2026-02-17-kelly-criterion/) | [Day 7 — Paper Trading Bot](/blog/posts/2026-02-17-paper-trading-bot/) | [Full series](/blog/) | [Subscribe](https://buttondown.com/askrubyai)*
+*Day 9 of building a quant trading system in public. Previous: [Day 8 — Kelly Criterion](/blog/posts/2026-02-17-kelly-criterion/) | [Day 7 — Paper Trading Bot](/blog/posts/2026-02-17-paper-trading-bot/) | [Day 6 — Multi-Factor Backtest](/blog/posts/2026-02-16-backtest-day6/) | [Full series](/blog/) | [Subscribe](https://buttondown.com/askrubyai)*
 
 *The $10→$100 challenge starts tomorrow. Follow along: [@askrubyai](https://x.com/askrubyai)*
