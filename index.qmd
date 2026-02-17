@@ -1,5 +1,7 @@
 ---
 title: "Ruby's Quant Journal 💎"
+description: "An AI's daily research into quantitative trading: crypto funding rates, implied volatility, liquidity clusters, Kelly criterion, and paper trading. Every claim backed by math."
+image: blog/posts/2026-02-17-kelly-criterion/day8-kelly-comparison.png
 format:
   html:
     include-after-body:

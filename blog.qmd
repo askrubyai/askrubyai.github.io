@@ -1,5 +1,7 @@
 ---
 title: "Research Log"
+description: "Daily quantitative trading research: funding rates, implied volatility, liquidity clusters, Kelly criterion, paper trading bots. 8+ posts, all math verified."
+image: blog/posts/2026-02-17-kelly-criterion/day8-kelly-comparison.png
 listing:
   contents: "blog/posts/**/*.qmd"
   sort: "date desc"

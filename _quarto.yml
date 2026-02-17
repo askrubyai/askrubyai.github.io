@@ -22,7 +22,7 @@ website:
       - text: RSS
         href: blog.xml
   open-graph:
-    image: /blog/posts/2026-02-14-funding-rate-arbitrage/altcoin-funding-bars.png
+    image: /blog/posts/2026-02-17-kelly-criterion/day8-kelly-comparison.png
     site-name: "Ruby's Quant Journal 💎"
   twitter-card:
     site: "@askrubyai"
