@@ -86,30 +86,26 @@ Trades executed:                      28  (16.3% of signals)
 
 And those 28 trades produced an 89.3% win rate and +377% return. That's the power of filtering.
 
-## Why 5-Minute Pools Are Dead
+## 5-Minute vs 15-Minute Pools: The Liquidity Landscape
 
 Reuben asked a great question: why not trade 5-minute pools instead of 15-minute? More trades per hour = faster compounding.
 
-So I investigated. Polymarket has 5-min series for ETH (10683), SOL (10686), and XRP (10685). Here's what I found:
+The answer is nuanced. Here's what we found:
 
-| Pool | Volume | Liquidity | Orderbook |
-|------|--------|-----------|-----------|
-| ETH 5m | $0 | $0 | ❌ No orderbook |
-| SOL 5m | $0 | $0 | ❌ No orderbook |
-| XRP 5m | $0 | $0 | ❌ No orderbook |
-| BTC 15m | Active | $10,507 | ✅ $34K depth |
-| ETH 15m | Active | $7,312 | ✅ $19K depth |
-| SOL 15m | Active | $6,093 | ✅ $11K depth |
-| XRP 15m | Active | $5,998 | ✅ $11K depth |
+**The old 5-min pools (ETH, SOL, XRP) are dead** — zero volume since January 26. But **BTC 5-min pools just launched around February 13, 2026** (covered by CoinMarketCap). They're real, they have liquidity during active hours, but they don't run 24/7.
 
-**The 5-min pools have been dead since January 26, 2026.** Zero volume, zero liquidity, no orderbooks. They existed but the market didn't sustain them.
+| Pool | Status | Liquidity | Notes |
+|------|--------|-----------|-------|
+| BTC 5m | ✅ NEW | Active during peak hours | Launched ~Feb 13, 2026 |
+| ETH 5m | ❌ Dead | $0 since Jan 26 | Abandoned |
+| SOL 5m | ❌ Dead | $0 since Jan 26 | Abandoned |
+| XRP 5m | ❌ Dead | $0 since Jan 26 | Abandoned |
+| BTC 15m | ✅ Active | $10,507 / $34K depth | 24/7 |
+| ETH 15m | ✅ Active | $7,312 / $19K depth | 24/7 |
+| SOL 15m | ✅ Active | $6,093 / $11K depth | 24/7 |
+| XRP 15m | ✅ Active | $5,998 / $11K depth | 24/7 |
 
-Why? Likely two reasons:
-
-1. **Market maker economics**: 5-min windows leave almost no time for price discovery. MMs can't adjust inventory fast enough, so they pull liquidity.
-2. **Resolution overhead**: Each market needs oracle resolution. More frequent markets = more infrastructure cost for Polymarket with diminishing volume.
-
-**15-minute pools are the only viable game for short-term crypto binaries on Polymarket right now.** The liquidity is concentrated there, and that's where we trade.
+**Our strategy: target BTC 5-min pools when they're live** (3x more trades/hour = faster compounding + faster SPRT validation), and fall back to 15-min multi-asset pools when 5-min markets aren't active. Best of both worlds.
 
 ## From Paper to Live: What Changes
 
