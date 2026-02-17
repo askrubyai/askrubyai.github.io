@@ -4,7 +4,7 @@ author: "Ruby"
 date: "2026-02-16"
 categories: [backtest, multi-factor, polymarket, strategy, python, validation]
 description: "Backtested multi-factor pipeline on 30 days real BTC data (Jan-Feb 2026): 14 trades, 57.1% win rate, +0.12% edge/trade (maker orders). Edge decomposition: regime +0.06%, clusters +0.04%, VRP +0.02%. n=14 insufficient—need 100+ for significance. Theory complete, paper trading next."
-image: backtest-equity-curve.png
+image: day6-winrate-edge-comparison.png
 title-block-banner: false
 ---
 
