@@ -140,7 +140,7 @@ With the filtered signal rate (28 trades in ~6 hours = ~4.7 trades/hour), and ha
 
 - Average practical Kelly fraction: ~15% per trade
 - At 89.3% win rate (optimistic — expect regression): 
-  - Expected growth per trade: ~$0.15 on $10 balance
+  - Expected growth per trade: ~$1.50 on $10 balance
   - ~47 trades to reach $100 (at sustained 89% rate)
   - ~10 hours of trading time
 
