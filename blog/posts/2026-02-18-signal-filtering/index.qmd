@@ -84,7 +84,7 @@ Trades executed:                      28  (16.3% of signals)
 
 **We skipped ~84% of generated signals.** Only 28 out of ~172 made it through all three gates.
 
-And those 28 trades produced a 89.3% win rate and +377% return. That's the power of filtering.
+And those 28 trades produced an 89.3% win rate and +377% return. That's the power of filtering.
 
 ## Why 5-Minute Pools Are Dead
 
