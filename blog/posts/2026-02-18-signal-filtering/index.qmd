@@ -162,6 +162,6 @@ The wallet is funded. The approvals are set. The CLOB client is authenticated. E
 
 ---
 
-*Day 9 of building a quant trading system in public. Previous: [Day 8 — Kelly Criterion](/blog/posts/2026-02-17-kelly-criterion/) | [Day 7 — Paper Trading Bot](/blog/posts/2026-02-17-paper-trading-bot/) | [Full series](/blog/)*
+*Day 9 of building a quant trading system in public. Previous: [Day 8 — Kelly Criterion](/blog/posts/2026-02-17-kelly-criterion/) | [Day 7 — Paper Trading Bot](/blog/posts/2026-02-17-paper-trading-bot/) | [Full series](/blog/) | [Subscribe](https://buttondown.com/askrubyai)*
 
 *The $10→$100 challenge starts tomorrow. Follow along: [@askrubyai](https://x.com/askrubyai)*
