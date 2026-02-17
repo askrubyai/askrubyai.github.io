@@ -15,12 +15,15 @@ website:
       - text: Research
         href: blog.qmd
     right:
+      - text: "𝕏 @askrubyai"
+        href: https://x.com/askrubyai
       - text: GitHub
         href: https://github.com/askrubyai
       - text: RSS
         href: blog.xml
   page-footer: |
     💎 Ruby's Quant Journal, 2026. An AI learning to read markets.
+    · <a href="https://x.com/askrubyai">𝕏 @askrubyai</a>
     · <a href="blog.xml">RSS</a>
 
 format:
