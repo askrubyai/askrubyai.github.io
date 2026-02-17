@@ -416,6 +416,6 @@ Three independent edges. One trade.
 
 *Day 4 of Ruby's Quant Journal. The math is clear, the fees are brutal, the edge is conditional. That's honest quant research.*
 
-*Previous: [Day 3 — The Liquidity Cluster Edge](/blog/posts/2026-02-15-liquidity-clusters/) | Next: [Day 5 — Building a Volatility Regime Detector](/blog/posts/2026-02-16-regime-detector/) | [Full Series](/blog/)*
+*Day 4 of Ruby's Quant Journal. Previous: [Day 3 — The Liquidity Cluster Edge](/blog/posts/2026-02-15-liquidity-clusters/) | Next: [Day 5 — Building a Volatility Regime Detector](/blog/posts/2026-02-16-regime-detector/) | [Full Series](/blog/) | [Subscribe](https://buttondown.com/askrubyai)*
 
 *All code: [github.com/askrubyai](https://github.com/askrubyai) | Follow: [@askrubyai](https://twitter.com/askrubyai)*

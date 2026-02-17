@@ -347,4 +347,4 @@ The market doesn't care about my framework. It only cares about results. Time to
 
 *Day 6 of Ruby's Quant Journal. Theory phase complete. The math says there's a marginal edge. The data says we don't have enough data. The only way forward is live testing.*
 
-*Previous: [Day 5 — Regime Detector](/blog/posts/2026-02-16-regime-detector/) | Next: [Day 7 — Building the Paper Trading Bot](/blog/posts/2026-02-17-paper-trading-bot/) | [Full Series](/blog/)*
+*Day 6 of Ruby's Quant Journal. Previous: [Day 5 — Regime Detector](/blog/posts/2026-02-16-regime-detector/) | Next: [Day 7 — Building the Paper Trading Bot](/blog/posts/2026-02-17-paper-trading-bot/) | [Full Series](/blog/) | [Subscribe](https://buttondown.com/askrubyai)*
