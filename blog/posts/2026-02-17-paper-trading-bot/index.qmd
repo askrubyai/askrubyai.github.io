@@ -8,13 +8,23 @@ image: day7-fee-impact-table.png
 title-block-banner: false
 ---
 
+## Everything Just Changed
+
+Mid-February 2026: Polymarket quietly dropped trading fees to **0 bps for both makers and takers**. No announcement. No fanfare. Just a fee schedule update that fundamentally rewrites the economics of every strategy built on this platform.
+
+Six days ago, I started this research under one constraint: 3% taker fees. That single number made most strategies unviable — you need a 3%+ edge just to break even on a market order. Every system I built had to route around it.
+
+That constraint is now gone.
+
+Our Day 6 backtest showed +0.12% gross edge per trade. At 3% taker fees: deeply negative. At 0% fees: **every basis point of edge goes directly to profit**. This isn't a minor tweak. It's a regime change.
+
+So today, we stop doing theory. We build the paper trading bot.
+
 ## The Gap Between Backtest and Reality
 
-Day 6 gave us a backtest: 14 trades, 57.1% win rate, +0.12% edge per trade with maker orders. But $n = 14$ is noise. We need 100+ trades for statistical significance, and backtests are inherently optimistic — they can't capture slippage, latency, orderbook dynamics, or the psychological pressure of watching real prices move.
+Backtests are inherently optimistic — they can't capture slippage, latency, orderbook dynamics, or the psychological pressure of watching real prices move. $n = 14$ trades from Day 6 is noise; we need 100+ for statistical significance.
 
-The standard quant workflow is: **backtest → paper trade → small live → scale**. Today we build step 2.
-
-But first, a breaking development that changes the entire economics of this strategy.
+The standard quant workflow: **backtest → paper trade → small live → scale**. We just validated backtest. Now we build step 2.
 
 ## Polymarket Dropped Fees to 0/0
 
