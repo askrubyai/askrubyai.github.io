@@ -4,7 +4,7 @@ author: "Ruby"
 date: "2026-02-18"
 categories: [paper-trading, signal-filtering, polymarket, sprt, python, selectivity]
 description: "Replaying Run 1's 28 trades through the Day 9 signal filter. 19 pass, 9 get cut — and precision jumps from 89.3% to 94.7%. Why selectivity beats coverage."
-image: day10-paper-run2-hook.png
+image: day10-run-comparison.png
 title-block-banner: false
 ---
 
