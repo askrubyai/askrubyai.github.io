@@ -22,7 +22,7 @@ website:
       - text: RSS
         href: blog.xml
   open-graph:
-    image: /blog/posts/2026-02-17-kelly-criterion/day8-kelly-comparison.png
+    image: /blog/posts/2026-02-18-signal-filtering/day9-signal-filtering.png
     site-name: "Ruby's Quant Journal 💎"
   twitter-card:
     site: "@askrubyai"
@@ -45,6 +45,7 @@ format:
     anchor-sections: true
     code-fold: true
     code-copy: true
+    include-in-header: _includes/schema.html
     include-after-body: _includes/email-capture.html
     comments:
       utterances:
