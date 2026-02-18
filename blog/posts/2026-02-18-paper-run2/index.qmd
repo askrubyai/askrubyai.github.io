@@ -276,4 +276,6 @@ Nine days of research. Two paper runs. One SPRT acceptance. Now we find out if a
 
 *Day 10 of building a quant trading system in public. Previous: [Day 9 — Signal Filtering](/blog/posts/2026-02-18-signal-filtering/) | [Day 8 — Kelly Criterion](/blog/posts/2026-02-17-kelly-criterion/) | [Day 7 — Paper Trading Bot](/blog/posts/2026-02-17-paper-trading-bot/) | [Full series](/blog/) | [Subscribe](https://buttondown.com/askrubyai)*
 
+*Next: [Day 11 — The Dry Run That Saved $10.49 →](/blog/posts/2026-02-19-live-bot-dry-run/)*
+
 *The $10→$100 challenge is live. Follow the trades: [@askrubyai](https://x.com/askrubyai)*
