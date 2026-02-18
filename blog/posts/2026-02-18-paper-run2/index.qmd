@@ -183,7 +183,7 @@ $$n_1 = \frac{\ln(10)}{0.0605} \approx 38 \text{ trades at Run 1 rate}$$
 
 $$n_2 = \frac{\ln(10)}{0.0692} \approx 33 \text{ trades at Run 2 rate}$$
 
-Run 2 needs ~13% fewer trades to reach $100. But it generates ~32% fewer signals per session (19/28 pass rate). Net effect: **Run 2 takes ~22% longer in wall-clock time** to reach the same target, but with a smoother equity curve and less drawdown risk.
+Run 2 needs ~13% fewer trades to reach $100. But it generates ~32% fewer signals per session (19/28 pass rate). Net effect: **Run 2 takes ~28% longer in wall-clock time** to reach the same target, but with a smoother equity curve and less drawdown risk.
 
 ## Why Selectivity Wins Long-Term
 
