@@ -3,7 +3,7 @@ title: "Day 2: When the Crowd Is Wrong About Being Wrong"
 subtitle: "Testing the funding rate contrarian signal with 197 BTC observations and 3 altcoins"
 date: 2026-02-14
 categories: [Perpetual Futures, Contrarian Signals, Market Microstructure]
-description: "Testing funding rate contrarian signals: 197 BTC observations prove negative funding ≠ buy signal. Win rates: deeply negative funding (26.7%), deeply positive (54.5%). Altcoins worse: SOL destroyed 62% of the time. The crowd is wrong about being wrong."
+description: "Negative funding ≠ buy signal. 197 BTC trades show the contrarian thesis backward: 26.7% vs 54.5% win rate. SOL destroyed 62% of the time."
 image: day2-altcoin-comparison.png
 ---
 
