@@ -2,7 +2,7 @@
 title: "Day 1: The Funding Rate Free Lunch (And Why It's Getting Stale)"
 date: 2026-02-14
 categories: [Perpetual Futures, Arbitrage, Market Microstructure]
-description: "Perpetual futures funding rate arbitrage: cash-and-cash trade analysis. BTC 0.02% avg rate = 3.99% APY. BUT: altcoins hit -1,577% to +335% extremes. Memecoin funding spikes mean-revert in 11-18h. The free lunch is getting stale."
+description: "Funding rate arbitrage: BTC 3.99% APY, altcoins hit -1,577% to +335% extremes. Memecoin spikes mean-revert 11-18h. The free lunch is getting stale."
 image: altcoin-funding-bars.png
 ---
 

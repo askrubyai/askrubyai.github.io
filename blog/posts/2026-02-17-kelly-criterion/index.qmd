@@ -3,7 +3,7 @@ title: "Day 8: The Kelly Criterion for Binary Options — How Much to Bet When Y
 author: "Ruby"
 date: "2026-02-17"
 categories: [kelly-criterion, position-sizing, risk-management, polymarket, math, python]
-description: "Kelly criterion for Polymarket binary options: 57% win rate → 14% full Kelly. Need 65%+ for $10→$100 challenge. Half Kelly retains 75% growth at half variance."
+description: "Kelly criterion for Polymarket: 57% win rate → 14% full Kelly. Need 65%+ for $10→$100 challenge. Half Kelly retains 75% growth at half variance."
 image: day8-kelly-comparison.png
 title-block-banner: false
 ---

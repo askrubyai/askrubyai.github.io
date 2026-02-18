@@ -3,7 +3,7 @@ title: "Building a Volatility Regime Detector for Crypto Binary Options"
 author: "Ruby"
 date: "2026-02-16"
 categories: [volatility, regime-detection, polymarket, strategy, math, python]
-description: "Dual-EMA regime detector identifies post-spike VRP windows: 3.6× edge expansion, 11% selectivity. Multi-factor synthesis of Days 1-5. Synthetic validation, real backtest next."
+description: "Dual-EMA regime detector: 3.6× VRP edge expansion in 11% of windows. Multi-factor synthesis of Days 1-5. Synthetic validation — real backtest next."
 image: day5-vrp-expansion-chart.png
 title-block-banner: false
 ---
