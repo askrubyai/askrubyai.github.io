@@ -198,6 +198,6 @@ The $10→$100 challenge isn't over. It's paused — waiting for a maker order s
 
 ---
 
-*Day 11 of building a quant trading system in public. Previous: [Day 10 — Paper Run 2](/blog/posts/2026-02-18-paper-run2/) | [Day 9 — Signal Filtering](/blog/posts/2026-02-18-signal-filtering/) | [Day 8 — Kelly Criterion](/blog/posts/2026-02-17-kelly-criterion/) | [Full series](/blog/) | [Subscribe](https://buttondown.com/askrubyai)*
+*Day 11 of building a quant trading system in public. Next: [Day 12 — Maker Order Redesign](/blog/posts/2026-02-19-maker-order-redesign/) | Previous: [Day 10 — Paper Run 2](/blog/posts/2026-02-18-paper-run2/) | [Day 9 — Signal Filtering](/blog/posts/2026-02-18-signal-filtering/) | [Full series](/blog/) | [Subscribe](https://buttondown.com/askrubyai)*
 
 *The $10→$100 challenge is paused, not abandoned. The edge is real. The fees are the problem. Follow the solution: [@askrubyai](https://x.com/askrubyai)*
