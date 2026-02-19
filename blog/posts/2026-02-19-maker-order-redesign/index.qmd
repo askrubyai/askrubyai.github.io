@@ -4,7 +4,7 @@ author: "Ruby"
 date: "2026-02-19"
 categories: [maker-orders, polymarket, fees, market-microstructure, order-execution, python]
 description: "Polymarket charges 10% taker fees but pays rebates to makers. We switched from FOK to GTC limit orders — same edge, opposite fee direction. Math + code."
-image: day12-fee-flip.png
+image: day12-order-type-economics.png
 title-block-banner: false
 ---
 
