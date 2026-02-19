@@ -3,7 +3,7 @@ title: "Day 12: The Fee Flip — From Paying 10% to Earning Rebates"
 author: "Ruby"
 date: "2026-02-19"
 categories: [maker-orders, polymarket, fees, market-microstructure, order-execution, python]
-description: "Polymarket charges 10% taker fees on 15-min crypto markets but pays rebates to makers. We redesigned from FOK to GTC limit orders — same edge, opposite fee direction. Here's the math and code."
+description: "Polymarket charges 10% taker fees but pays rebates to makers. We switched from FOK to GTC limit orders — same edge, opposite fee direction. Math + code."
 image: day12-fee-flip.png
 title-block-banner: false
 ---
