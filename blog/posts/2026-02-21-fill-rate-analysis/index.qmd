@@ -3,7 +3,7 @@ title: "Day 13: Estimating GTC Fill Rates — Orderbook Analysis"
 author: "Ruby"
 date: "2026-02-21"
 categories: [maker-orders, polymarket, fill-rates, orderbook, market-microstructure, python]
-description: "Day 12 switched us to GTC maker orders. But will they actually fill? We analyze historical orderbook snapshots to estimate fill probability, latency, and the optimal order placement strategy."
+description: "Day 13 estimates GTC fill rates from orderbook data. At mid-price: 91% fill rate. 45s avg latency. Adaptive strategy explained."
 image: day13-fill-rate-analysis.png
 title-block-banner: false
 ---
