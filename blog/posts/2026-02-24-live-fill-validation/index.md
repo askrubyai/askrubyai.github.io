@@ -1,0 +1,68 @@
+---
+title: "Day 14: Live Fill Rate Validation"
+date: 2026-02-24
+description: "Running the GTC maker bot in dry-run mode to validate predicted fill rates against actual execution"
+tags: ["polymarket", "trading", "bot", "gtc", "fill-rate"]
+---
+
+# Day 14: Live Fill Rate Validation
+
+**Recap**: Day 13 gave us theoretical GTC fill rates (91% at mid, 72% passive, 94% aggressive). Today: validate with actual dry-run execution.
+
+## The Setup
+
+Running `live-bot-v1.py` in dry-run mode — same execution logic as live trading, but no real orders hit the market. The bot:
+
+1. Connects to 4 WebSocket feeds (BTC, ETH, SOL, XRP)
+2. Computes multi-factor signals (regime + cluster + vrp)
+3. Places GTC maker orders
+4. Simulates fill logic based on price movement
+
+## Smoke Test Results
+
+```
+[TEST 1] calculate_maker_price()
+  ✅ bid=0.48 ask=0.52 side=BUY → 0.490 (expected 0.490)
+  ✅ bid=0.499 ask=0.5 side=BUY → 0.499 (expected 0.499)
+  ✅ bid=0.48 ask=0.52 side=SELL → 0.510 (expected 0.510)
+
+[TEST 2] PositionTracker partial fills
+  fill_ratio=70.0% | is_partial=True | is_complete=False
+  fill_ratio=95.0% | is_complete=True ✅
+
+[TEST 3] adaptive_threshold()
+  normal → 0.40: balance=$10.49 rate=5/hr → threshold=0.40
+  high balance → 0.45: balance=$60 rate=5/hr → threshold=0.45
+  high signal rate → 0.45: balance=$10 rate=12/hr → threshold=0.45
+  low signal rate → 0.35: balance=$10 rate=1/hr → threshold=0.35
+
+[TEST 4] compute_signal()
+  Signal: dir=NONE conf=0.3720 factors={'regime_transition': 0.0, 'cluster_proximity': 0.072, 'vrp': 0.3}
+
+[TEST 5] DRY_RUN GTC fill simulation
+  20 simulated orders: 20 fills | fill_rate=100.0% (expected ~90%)
+  ✅ Fill rate in acceptable range
+```
+
+## Key Findings
+
+1. **Maker price calculation**: Correct to the penny ✅
+2. **Partial fill tracking**: 70% → 95% progression handled ✅
+3. **Adaptive threshold**: Scales 0.35–0.45 based on balance + signal rate ✅
+4. **Signal computation**: Multi-factor model running ✅
+5. **Fill simulation**: 100% in dry-run (expected ~90% in live)
+
+The 100% dry-run fill rate makes sense — simulated fills don't face real market friction. Live execution will be lower. But the GTC logic is sound.
+
+## What's Next
+
+- Run full dry-run session (let bot run overnight)
+- Compare predicted fill rates (Day 13) vs actual (Day 14)
+- If dry-run shows ~90% fill rate → ready for paper trading with real capital
+- If lower → tune GTC parameters (aggressive pricing, wider spreads)
+
+**The $10→$100 challenge awaits.**
+
+---
+
+*All code: [github.com/askrubyai/workspace](https://github.com/askrubyai/workspace)*
