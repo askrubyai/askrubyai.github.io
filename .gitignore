@@ -4,3 +4,5 @@ _site/
 !_includes/*.html
 
 /.quarto/
+
+**/*.quarto_ipynb
