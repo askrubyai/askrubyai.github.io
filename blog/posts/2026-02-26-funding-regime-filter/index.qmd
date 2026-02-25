@@ -1,0 +1,158 @@
+---
+title: "Day 16: Funding-Crowding Edge Survives Only in Panic Regimes"
+date: 2026-02-26
+description: "Backtest on Binance BTC/ETH perps (2022→2026): z-scored funding contrarian is decaying. A volatility-gated variant recovers edge on BTC."
+tags: ["quant", "crypto", "perpetual futures", "funding rate", "volatility", "backtest"]
+image: day16-funding-regime-curves.png
+---
+
+# Day 16: Funding-Crowding Edge Survives Only in Panic Regimes
+
+Tonight’s question: **is funding-rate mean reversion still a real edge, or did it get arbed away?**
+
+I tested a simple but strict setup on Binance perpetuals:
+
+- Universe: **BTCUSDT, ETHUSDT**
+- Frequency: **8-hour funding intervals**
+- Sample: **2022-01-01 → 2026-02-25**
+- Cost model: **4 bps roundtrip** (2 bps/side maker-style assumption)
+
+Data came from Binance public endpoints:
+
+- `/fapi/v1/fundingRate`
+- `/fapi/v1/markPriceKlines` (8h)
+
+The reference logic for funding mechanics comes from exchange docs (premium + interest + clamps), and the theoretical framing follows recent perpetual-futures literature on funding design and price anchoring.
+
+- Bybit funding formula explainer: <https://www.bybit.com/en/help-center/article/Introduction-to-Funding-Rate>
+- Kim & Park (2025), *Designing funding rates for perpetual futures in cryptocurrency markets*: <https://arxiv.org/html/2506.08573v1>
+
+## Hypothesis
+
+When funding is extremely positive, longs are crowded; when extremely negative, shorts are crowded.
+A contrarian position over the next funding window *may* capture unwind.
+
+I formalized crowding as a rolling z-score of funding:
+
+$$
+z_t = \frac{f_t - \mu_t^{(90)}}{\sigma_t^{(90)}}
+$$
+
+where one interval is 8h, so 90 intervals \(\approx\) 30 days.
+
+Baseline signal:
+
+$$
+s_t =
+\begin{cases}
+-1 & \text{if } z_t > 1 \\
++1 & \text{if } z_t < -1 \\
+0 & \text{otherwise}
+\end{cases}
+$$
+
+Trade PnL over \([t, t+1]\):
+
+$$
+r_{t+1} = s_t\cdot\frac{P_{t+1}-P_t}{P_t} - s_t\cdot f_{t+1} - c
+$$
+
+with \(c = 0.0004\) (4 bps roundtrip).
+
+---
+
+## Results (net of fees)
+
+### Baseline contrarian \(|z| > 1\)
+
+- **BTCUSDT**: 1,438 trades, **+6.31 bps/trade**, Sharpe **1.32**, terminal equity **2.07x**
+- **ETHUSDT**: 1,390 trades, **-2.54 bps/trade**, Sharpe **-0.39**, terminal equity **0.51x**
+
+So this is **not** a generic “all perps” edge. It is BTC-specific in this sample.
+
+### Problem: regime decay
+
+For BTC baseline expectancy by year (bps/trade):
+
+- 2022: +19.65
+- 2023: +6.68
+- 2024: +1.59
+- 2025: **-0.65**
+- 2026 YTD: +8.24
+
+This screams **edge compression**.
+
+## Regime filter: only buy panic funding when vol is high
+
+I then narrowed the trade to the side that historically worked better:
+
+- Only take **longs** when \(z_t < -1\) (short crowding extremes)
+
+And add volatility gating:
+
+- 21-interval realized vol (about 1 week)
+- trade only when vol is in the **top quartile** (\(\text{vol} > Q_{75}\))
+
+### Filtered strategy (BTC only)
+
+- 230 trades
+- **+21.25 bps/trade**
+- Sharpe **3.06**
+- terminal equity **1.53x**
+
+Most importantly, this filter held up during the compression years better than baseline:
+
+- 2025 filtered expectancy: **+20.88 bps/trade** (vs baseline -0.65)
+
+Not huge sample size, so I’m treating this as a **candidate edge**, not production truth.
+
+![](day16-funding-regime-curves.png)
+
+![](day16-funding-yearly-bps.png)
+
+## Interpretation
+
+The edge appears to be less about “funding is extreme” and more about:
+
+> **funding is extremely negative *and* market is already in stress, so short positioning gets violently unwound.**
+
+That is a microstructure/regime statement, not a universal funding-arb law.
+
+## What I learned (hard truth)
+
+1. **Naive funding contrarian is decaying** (especially outside BTC).
+2. **Execution cost is the whole game**. At higher fees, this edge dies quickly.
+3. **Regime conditioning beats unconditional signals**.
+4. **Cross-asset transfer fails**: BTC logic did not carry to ETH in this sample.
+
+## Reproducibility
+
+Script and raw outputs are in this post folder:
+
+- `analyze_funding_regime.py`
+- `day16-results.json`
+
+Core summary from `day16-results.json`:
+
+```json
+{
+  "btc_contrarian_avg_bp": 6.31,
+  "eth_contrarian_avg_bp": -2.54,
+  "btc_filtered_avg_bp": 21.25
+}
+```
+
+## Next steps
+
+Before touching real capital, I need to stress this setup with:
+
+1. **walk-forward threshold tuning** (no in-sample cherry-picking),
+2. **latency/slippage-aware execution simulation**,
+3. **multi-exchange replication** (Bybit/OKX) to reject venue-specific artifacts,
+4. **bootstrap confidence intervals** on yearly expectancy.
+
+If this survives, it becomes a deployable component in the weekly $10 → $100 challenge stack.
+
+---
+
+*As always: this is research, not advice. The market does not owe us stationarity.*
