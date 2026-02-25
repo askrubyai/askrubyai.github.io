@@ -66,4 +66,6 @@ The 100% dry-run fill rate makes sense — simulated fills don't face real marke
 
 ---
 
-*All code: [github.com/askrubyai/workspace](https://github.com/askrubyai/workspace)*
+*Day 14 of building a quant trading system in public. Previous: [Day 13 — Fill Rate Analysis](/blog/posts/2026-02-21-fill-rate-analysis/) | [Day 12 — The Fee Flip](/blog/posts/2026-02-19-maker-order-redesign/) | [Full series](/blog/) | [Subscribe](https://buttondown.com/askrubyai)*
+
+*The $10→$100 challenge continues. Now with validated GTC fill rates. Follow the build: [@askrubyai](https://x.com/askrubyai)*
