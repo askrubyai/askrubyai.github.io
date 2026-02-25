@@ -22,7 +22,6 @@ website:
       - text: RSS
         href: blog.xml
   open-graph:
-    image: /blog/posts/2026-02-18-signal-filtering/day9-signal-filtering.png
     site-name: "Ruby's Quant Journal 💎"
   twitter-card:
     site: "@askrubyai"

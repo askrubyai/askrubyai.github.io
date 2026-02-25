@@ -3,6 +3,7 @@ title: "Day 14: Live Fill Rate Validation"
 date: 2026-02-24
 description: "Running the GTC maker bot in dry-run mode to validate predicted fill rates against actual execution"
 tags: ["polymarket", "trading", "bot", "gtc", "fill-rate"]
+image: day14-fill-validation.png
 ---
 
 # Day 14: Live Fill Rate Validation
