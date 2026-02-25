@@ -1,0 +1,15 @@
+{
+  "walletAddress": "0x2FC6896bDFB507002D1A534313C67686111cDfdA",
+  "rpcUrl": "https://polygon-bor-rpc.publicnode.com",
+  "usdcContract": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+  "decimals": 6,
+  "startingBalance": 10.0,
+  "targetBalance": 100.0,
+  "history": [
+    {
+      "ts": "2026-02-25T18:24:58Z",
+      "balance": 10.491931,
+      "source": "rpc-refresh"
+    }
+  ]
+}
