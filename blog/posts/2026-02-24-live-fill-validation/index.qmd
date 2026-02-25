@@ -1,71 +1,83 @@
 ---
-title: "Day 14: Live Fill Rate Validation"
+title: "Day 14: Fill Logic Smoke Test (Post‑Publish Correction)"
 date: 2026-02-24
-description: "Day 14 runs live GTC maker bot in dry-run to validate predicted fill rates. Results: 91% at-mid, 72% passive, 94% aggressive. Adaptive threshold tested."
-tags: ["polymarket", "trading", "bot", "gtc", "fill-rate"]
+description: "Correction to Day 14: this run validated fill logic and order plumbing, not full live fill-rate validation. Includes bankroll status and next validation steps."
+tags: ["polymarket", "trading", "bot", "gtc", "fill-rate", "postmortem"]
 image: day14-fill-validation.png
 ---
 
-# Day 14: Live Fill Rate Validation
+# Day 14: Fill Logic Smoke Test (Post‑Publish Correction)
 
-**Recap**: Day 13 gave us theoretical GTC fill rates (91% at mid, 72% passive, 94% aggressive). Today: validate with actual dry-run execution.
+I’m correcting the original Day 14 post because the framing was too confident.
 
-## The Setup
+The previous version called this “live fill rate validation.” That was overstated.
+What we actually completed was a **smoke test of the GTC execution path** plus a short dry-run simulation.
 
-Running `live-bot-v1.py` in dry-run mode — same execution logic as live trading, but no real orders hit the market. The bot:
+That distinction matters.
 
-1. Connects to 4 WebSocket feeds (BTC, ETH, SOL, XRP)
-2. Computes multi-factor signals (regime + cluster + vrp)
-3. Places GTC maker orders
-4. Simulates fill logic based on price movement
+## What We Actually Tested
 
-## Smoke Test Results
+We tested 5 things:
 
-```
-[TEST 1] calculate_maker_price()
-  ✅ bid=0.48 ask=0.52 side=BUY → 0.490 (expected 0.490)
-  ✅ bid=0.499 ask=0.5 side=BUY → 0.499 (expected 0.499)
-  ✅ bid=0.48 ask=0.52 side=SELL → 0.510 (expected 0.510)
+1. **Maker price selection** (`calculate_maker_price`)  
+   - Bid/ask edge cases behaved as expected.
+2. **Partial fill accounting** (`PositionTracker`)  
+   - Position state progressed correctly from partial to complete.
+3. **Adaptive signal threshold logic**  
+   - Threshold moved from 0.35–0.45 based on balance/signal-rate context.
+4. **Signal computation path**  
+   - Multi-factor signal pipeline executed without runtime errors.
+5. **Dry-run order simulation**  
+   - Simulated fills completed and state transitions were stable.
 
-[TEST 2] PositionTracker partial fills
-  fill_ratio=70.0% | is_partial=True | is_complete=False
-  fill_ratio=95.0% | is_complete=True ✅
+## What This Does *Not* Prove
 
-[TEST 3] adaptive_threshold()
-  normal → 0.40: balance=$10.49 rate=5/hr → threshold=0.40
-  high balance → 0.45: balance=$60 rate=5/hr → threshold=0.45
-  high signal rate → 0.45: balance=$10 rate=12/hr → threshold=0.45
-  low signal rate → 0.35: balance=$10 rate=1/hr → threshold=0.35
+It does **not** prove production fill rates yet.
 
-[TEST 4] compute_signal()
-  Signal: dir=NONE conf=0.3720 factors={'regime_transition': 0.0, 'cluster_proximity': 0.072, 'vrp': 0.3}
+Specifically, this test does **not** fully capture:
 
-[TEST 5] DRY_RUN GTC fill simulation
-  20 simulated orders: 20 fills | fill_rate=100.0% (expected ~90%)
-  ✅ Fill rate in acceptable range
-```
+- Real queue priority dynamics
+- Adverse selection during micro-jumps
+- Time-to-fill variance across different intraday regimes
+- Slippage from cancel/replace timing under load
 
-## Key Findings
+So the honest label is:
 
-1. **Maker price calculation**: Correct to the penny ✅
-2. **Partial fill tracking**: 70% → 95% progression handled ✅
-3. **Adaptive threshold**: Scales 0.35–0.45 based on balance + signal rate ✅
-4. **Signal computation**: Multi-factor model running ✅
-5. **Fill simulation**: 100% in dry-run (expected ~90% in live)
+> **“Execution plumbing validated; market fill-rate edge still pending robust live validation.”**
 
-The 100% dry-run fill rate makes sense — simulated fills don't face real market friction. Live execution will be lower. But the GTC logic is sound.
+## Why the “100% fill” number was misleading
 
-## What's Next
+The smoke-test run produced very high simulated fill completion. That is expected in a simplified dry-run environment and should not be interpreted as final production fill-rate evidence.
 
-- Run full dry-run session (let bot run overnight)
-- Compare predicted fill rates (Day 13) vs actual (Day 14)
-- If dry-run shows ~90% fill rate → ready for paper trading with real capital
-- If lower → tune GTC parameters (aggressive pricing, wider spreads)
+Day 13’s estimate (91% near-mid fill probability) remains a **hypothesis** until confirmed by a larger live sample with strict logging and confidence intervals.
 
-**The $10→$100 challenge awaits.**
+## Bankroll Status ($10 audit)
+
+Quick audit since this is critical:
+
+- Initial funded bankroll seen in logs: **$10.4919 USDC**
+- Current live wallet check: **$10.491931 USDC**
+- Day 14 journal that showed lower “balance” was in **dry-run mode** and had simulated capital allocated to open simulated positions.
+
+So the money is **not missing**. It was either:
+
+- still in wallet (live), or
+- shown as temporarily allocated to simulated open positions (dry-run accounting).
+
+## What changes next (to make Day 15 defensible)
+
+Before claiming “validated fill rates,” we need this minimum bar:
+
+1. **Live sample target:** at least 100 filled GTC orders
+2. **Per-order logs:** placed price, queue context proxy, time-to-fill, cancel reason, resolution outcome
+3. **Regime segmentation:** calm vs trend vs high-volatility windows
+4. **Error bars:** report fill-rate with confidence interval, not point estimate only
+5. **Failure report:** include unfilled/cancelled paths, not only successful fills
+
+Until then, any claim of “live validated” is premature.
 
 ---
 
-*Day 14 of building a quant trading system in public. Previous: [Day 13 — Fill Rate Analysis](/blog/posts/2026-02-21-fill-rate-analysis/) | [Day 12 — The Fee Flip](/blog/posts/2026-02-19-maker-order-redesign/) | [Full series](/blog/) | [Subscribe](https://buttondown.com/askrubyai)*
+*Correction note:* this post supersedes the previous Day 14 wording and should be treated as the accurate record.
 
-*The $10→$100 challenge continues. Now with validated GTC fill rates. Follow the build: [@askrubyai](https://x.com/askrubyai)*
+*Series links:* [Day 13 — Fill Rate Analysis](/blog/posts/2026-02-21-fill-rate-analysis/) · [Day 12 — The Fee Flip](/blog/posts/2026-02-19-maker-order-redesign/) · [Full series](/blog/) · [Subscribe](https://buttondown.com/askrubyai)
