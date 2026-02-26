@@ -1,0 +1,146 @@
+{
+  "meta": {
+    "generated_utc": "2026-02-26T20:04:07.527056+00:00",
+    "sample_start_utc": "2022-01-01T00:00:00+00:00",
+    "sample_end_utc": "2026-02-26T16:00:00+00:00",
+    "signal": {
+      "z_threshold": 1.0,
+      "vol_q": 0.75
+    },
+    "walkforward_oos_years": [
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "bootstrap_iters": 5000,
+    "avg_block_len": 5
+  },
+  "counts": {
+    "rows_total": 4554,
+    "oos_trades": 117,
+    "yearly_trade_counts": [
+      {
+        "year": 2023,
+        "trades": 1,
+        "vol_threshold": 0.020560081843009625
+      },
+      {
+        "year": 2024,
+        "trades": 58,
+        "vol_threshold": 0.016976037849726802
+      },
+      {
+        "year": 2025,
+        "trades": 41,
+        "vol_threshold": 0.016561641615013955
+      },
+      {
+        "year": 2026,
+        "trades": 17,
+        "vol_threshold": 0.01621893493242357
+      }
+    ]
+  },
+  "scenarios": {
+    "ideal_4bps_full_fill": {
+      "assumptions": {
+        "label": "Ideal (4bps, full fill)",
+        "cost": 0.0004,
+        "latency_k": 0.0,
+        "fill": 1.0
+      },
+      "summary": {
+        "n": 117,
+        "avg": 0.0020034959220462684,
+        "avg_bp": 20.034959220462685,
+        "win_rate": 0.5726495726495726,
+        "equity": 1.2343297009223195,
+        "median_bp": 15.451409182157194,
+        "p10_bp": -178.9148312791324,
+        "p90_bp": 196.54898966362018
+      },
+      "lag1_autocorr": 0.022571978858689775,
+      "bootstrap_iid": {
+        "mean": 0.0020034959220462684,
+        "ci95_low": -0.001673848326427748,
+        "ci95_high": 0.005575440457204827,
+        "p_gt_0": 0.858
+      },
+      "bootstrap_stationary": {
+        "mean": 0.0020034959220462684,
+        "ci95_low": -0.0008259897417271685,
+        "ci95_high": 0.004790118903909221,
+        "p_gt_0": 0.9222,
+        "avg_block_len": 5,
+        "restart_p": 0.2
+      }
+    },
+    "realistic_7bps_85fill_10pct_range": {
+      "assumptions": {
+        "label": "Realistic (7bps, 85% fill, 10% range latency)",
+        "cost": 0.0007,
+        "latency_k": 0.1,
+        "fill": 0.85
+      },
+      "summary": {
+        "n": 117,
+        "avg": -0.0008980051364441191,
+        "avg_bp": -8.980051364441191,
+        "win_rate": 0.46153846153846156,
+        "equity": 0.8841929796655597,
+        "median_bp": -13.501573796947785,
+        "p10_bp": -178.9311174913377,
+        "p90_bp": 141.49543737593933
+      },
+      "lag1_autocorr": 0.02677919950122576,
+      "bootstrap_iid": {
+        "mean": -0.0008980051364441191,
+        "ci95_low": -0.004007480944049589,
+        "ci95_high": 0.002232725334330095,
+        "p_gt_0": 0.2878
+      },
+      "bootstrap_stationary": {
+        "mean": -0.0008980051364441191,
+        "ci95_low": -0.003358138502739941,
+        "ci95_high": 0.0014032953734196604,
+        "p_gt_0": 0.2292,
+        "avg_block_len": 5,
+        "restart_p": 0.2
+      }
+    },
+    "stressed_10bps_70fill_20pct_range": {
+      "assumptions": {
+        "label": "Stressed (10bps, 70% fill, 20% range latency)",
+        "cost": 0.001,
+        "latency_k": 0.2,
+        "fill": 0.7
+      },
+      "summary": {
+        "n": 117,
+        "avg": -0.0028815144289874085,
+        "avg_bp": -28.815144289874084,
+        "win_rate": 0.4017094017094017,
+        "equity": 0.7042752185110984,
+        "median_bp": -24.896508599050218,
+        "p10_bp": -169.46969397269294,
+        "p90_bp": 96.65655235498593
+      },
+      "lag1_autocorr": 0.03615731844019679,
+      "bootstrap_iid": {
+        "mean": -0.0028815144289874085,
+        "ci95_low": -0.005576916721045867,
+        "ci95_high": -0.0002835432382235274,
+        "p_gt_0": 0.0158
+      },
+      "bootstrap_stationary": {
+        "mean": -0.0028815144289874085,
+        "ci95_low": -0.005065122051480754,
+        "ci95_high": -0.0008080764050472267,
+        "p_gt_0": 0.0028,
+        "avg_block_len": 5,
+        "restart_p": 0.2
+      }
+    }
+  }
+}
