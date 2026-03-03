@@ -1,0 +1,152 @@
+{
+  "meta": {
+    "generated_utc": "2026-03-03T09:34:34.522554+00:00",
+    "sample_start_utc": "2022-01-01T00:00:00+00:00",
+    "sample_end_utc": "2026-03-03T08:00:00+00:00",
+    "signal": {
+      "z_threshold": 1.0,
+      "vol_q": 0.75
+    },
+    "walkforward_oos_years": [
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "bootstrap_iters": 5000,
+    "avg_block_len": 5,
+    "queue_fill_proxy": "touch_prob = min(1, 0.5*range*sqrt(order_life_min/480)/quote_dist); fill_prob = touch_prob*queue_priority"
+  },
+  "counts": {
+    "rows_total": 4568,
+    "oos_trades": 117,
+    "yearly_trade_counts": [
+      {
+        "year": 2023,
+        "trades": 1,
+        "vol_threshold": 0.020560081843009625
+      },
+      {
+        "year": 2024,
+        "trades": 58,
+        "vol_threshold": 0.016976037849726802
+      },
+      {
+        "year": 2025,
+        "trades": 41,
+        "vol_threshold": 0.016561641615013955
+      },
+      {
+        "year": 2026,
+        "trades": 17,
+        "vol_threshold": 0.01621893493242357
+      }
+    ]
+  },
+  "scenarios": {
+    "taker_taker": {
+      "assumptions": {
+        "label": "Always taker (enter+exit)",
+        "mode": "taker",
+        "cost_rt": 0.001,
+        "latency_k": 0.05,
+        "gross_capture_unfilled": 1.0
+      },
+      "summary": {
+        "n": 117,
+        "avg": 2.350964546776929e-05,
+        "avg_bp": 0.23509645467769288,
+        "win_rate": 0.49572649572649574,
+        "equity": 0.978748207066828,
+        "median_bp": -7.844150385605872,
+        "p10_bp": -199.21101416388248,
+        "p90_bp": 176.45206347121814
+      },
+      "fill_stats": {
+        "avg_fill_prob": 1.0,
+        "expected_skip_fraction": 0.0,
+        "avg_gross_capture": 1.0
+      },
+      "bootstrap_stationary": {
+        "mean": 2.350964546776929e-05,
+        "ci95_low": -0.0028355800252244925,
+        "ci95_high": 0.0028600348450948036,
+        "p_gt_0": 0.5126,
+        "avg_block_len": 5,
+        "restart_p": 0.2
+      }
+    },
+    "maker_first_then_chase": {
+      "assumptions": {
+        "label": "Maker-first, chase if unfilled",
+        "mode": "maker_chase",
+        "quote_dist": 0.0006,
+        "queue_priority": 0.55,
+        "order_life_min": 5,
+        "fill_cost_rt": 0.0007,
+        "fill_latency_k": 0.03,
+        "unfilled_capture": 0.6,
+        "chase_cost_rt": 0.001,
+        "chase_latency_k": 0.1
+      },
+      "summary": {
+        "n": 117,
+        "avg": -0.000574914220025229,
+        "avg_bp": -5.74914220025229,
+        "win_rate": 0.47863247863247865,
+        "equity": 0.9196450842091488,
+        "median_bp": -11.684207592449273,
+        "p10_bp": -169.36446659713118,
+        "p90_bp": 138.7609523075141
+      },
+      "fill_stats": {
+        "avg_fill_prob": 0.5361976328729228,
+        "expected_skip_fraction": 0.46380236712707723,
+        "avg_gross_capture": 0.8144790531491691
+      },
+      "bootstrap_stationary": {
+        "mean": -0.000574914220025229,
+        "ci95_low": -0.0030517516634749327,
+        "ci95_high": 0.001713110048412096,
+        "p_gt_0": 0.324,
+        "avg_block_len": 5,
+        "restart_p": 0.2
+      }
+    },
+    "maker_only_passive": {
+      "assumptions": {
+        "label": "Maker-only (skip if no fill)",
+        "mode": "maker_only",
+        "quote_dist": 0.0008,
+        "queue_priority": 0.45,
+        "order_life_min": 3,
+        "fill_cost_rt": 0.0004,
+        "fill_latency_k": 0.04,
+        "gross_capture_unfilled": 0.0
+      },
+      "summary": {
+        "n": 117,
+        "avg": 0.0003445163400645712,
+        "avg_bp": 3.4451634006457117,
+        "win_rate": 0.5042735042735043,
+        "equity": 1.0362570465505423,
+        "median_bp": 0.3264193411746916,
+        "p10_bp": -85.65829991411962,
+        "p90_bp": 83.37215191936436
+      },
+      "fill_stats": {
+        "avg_fill_prob": 0.3981902366529675,
+        "expected_skip_fraction": 0.6018097633470325,
+        "avg_gross_capture": 0.3981902366529675
+      },
+      "bootstrap_stationary": {
+        "mean": 0.0003445163400645712,
+        "ci95_low": -0.000876659176426889,
+        "ci95_high": 0.0015162802711976232,
+        "p_gt_0": 0.727,
+        "avg_block_len": 5,
+        "restart_p": 0.2
+      }
+    }
+  }
+}
