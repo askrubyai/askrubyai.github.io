@@ -1,0 +1,452 @@
+{
+  "meta": {
+    "generated_utc": "2026-03-04T09:36:08.249875+00:00",
+    "sample_start_utc": "2022-01-01T00:00:00+00:00",
+    "sample_end_utc": "2026-03-04T08:00:00+00:00",
+    "signal": {
+      "z_threshold": 1.0,
+      "vol_q": 0.75
+    },
+    "walkforward_oos_years": [
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "bootstrap_iters": 5000,
+    "avg_block_len": 5,
+    "maker_cfg": {
+      "quote_dist": 0.0006,
+      "queue_priority": 0.55,
+      "order_life_min": 5,
+      "fill_cost_rt": 0.0007,
+      "fill_latency_k": 0.03,
+      "unfilled_capture": 0.6,
+      "chase_cost_rt": 0.001,
+      "chase_latency_k": 0.1
+    },
+    "taker_cfg": {
+      "cost_rt": 0.001,
+      "latency_k": 0.05
+    },
+    "gating": {
+      "q_candidates": [
+        0.4,
+        0.5,
+        0.6,
+        0.7,
+        0.8,
+        0.9
+      ],
+      "selection_rule": "For each test year y: pick q maximizing prior-years avg return; chase unfilled only if strength (-z) >= quantile_q(train_strength)."
+    }
+  },
+  "counts": {
+    "rows_total": 4571,
+    "oos_trades": 118,
+    "yearly": [
+      {
+        "year": 2023,
+        "trades": 1,
+        "vol_threshold": 0.020560081843009625,
+        "gating": {
+          "selected_q": 0.9,
+          "selected_threshold": 3.046275826979631,
+          "train_avg_ret": 0.0026538366023006418,
+          "train_avg_bp": 26.538366023006418,
+          "train_avg_fill": 0.55,
+          "train_avg_capture": 0.5776923076923077,
+          "train_unfilled_chase_rate": 0.10256410256410257,
+          "selection_mode": "argmax_train_avg_ret",
+          "leaderboard": [
+            {
+              "q": 0.9,
+              "threshold": 3.046275826979631,
+              "avg_ret": 0.0026538366023006418,
+              "avg_bp": 26.538366023006418,
+              "avg_fill": 0.55,
+              "avg_capture": 0.5776923076923077,
+              "unfilled_chase_rate": 0.10256410256410257
+            },
+            {
+              "q": 0.4,
+              "threshold": 1.397063912168734,
+              "avg_ret": 0.0020436061033430723,
+              "avg_bp": 20.436061033430722,
+              "avg_fill": 0.55,
+              "avg_capture": 0.7092307692307693,
+              "unfilled_chase_rate": 0.5897435897435899
+            },
+            {
+              "q": 0.8,
+              "threshold": 2.2491972122843302,
+              "avg_ret": 0.0019817042007260026,
+              "avg_bp": 19.817042007260024,
+              "avg_fill": 0.55,
+              "avg_capture": 0.6053846153846154,
+              "unfilled_chase_rate": 0.20512820512820515
+            },
+            {
+              "q": 0.7,
+              "threshold": 1.86406849380043,
+              "avg_ret": 0.0017648309556047537,
+              "avg_bp": 17.648309556047536,
+              "avg_fill": 0.55,
+              "avg_capture": 0.6330769230769231,
+              "unfilled_chase_rate": 0.3076923076923077
+            },
+            {
+              "q": 0.5,
+              "threshold": 1.5524707919927816,
+              "avg_ret": 0.0016732591334313392,
+              "avg_bp": 16.73259133431339,
+              "avg_fill": 0.55,
+              "avg_capture": 0.6884615384615385,
+              "unfilled_chase_rate": 0.5128205128205129
+            },
+            {
+              "q": 0.6,
+              "threshold": 1.690144561978674,
+              "avg_ret": 0.0010524933628072019,
+              "avg_bp": 10.524933628072018,
+              "avg_fill": 0.55,
+              "avg_capture": 0.6607692307692309,
+              "unfilled_chase_rate": 0.4102564102564103
+            }
+          ]
+        },
+        "test_selective_avg_bp": 7.217868640475691,
+        "test_selective_unfilled_chase_rate": 0.0
+      },
+      {
+        "year": 2024,
+        "trades": 58,
+        "vol_threshold": 0.016976037849726802,
+        "gating": {
+          "selected_q": 0.9,
+          "selected_threshold": 2.7131798017582462,
+          "train_avg_ret": 0.0014350797120346549,
+          "train_avg_bp": 14.350797120346549,
+          "train_avg_fill": 0.545140474018769,
+          "train_avg_capture": 0.5735615266503479,
+          "train_unfilled_chase_rate": 0.10413857102464234,
+          "selection_mode": "argmax_train_avg_ret",
+          "leaderboard": [
+            {
+              "q": 0.9,
+              "threshold": 2.7131798017582462,
+              "avg_ret": 0.0014350797120346549,
+              "avg_bp": 14.350797120346549,
+              "avg_fill": 0.545140474018769,
+              "avg_capture": 0.5735615266503479,
+              "unfilled_chase_rate": 0.10413857102464234
+            },
+            {
+              "q": 0.8,
+              "threshold": 2.105844975200304,
+              "avg_ret": 0.0012282257177699126,
+              "avg_bp": 12.282257177699126,
+              "avg_fill": 0.545140474018769,
+              "avg_capture": 0.6019825792819269,
+              "unfilled_chase_rate": 0.20827714204928469
+            },
+            {
+              "q": 0.7,
+              "threshold": 1.8609423865774621,
+              "avg_ret": 0.0009731510703265112,
+              "avg_bp": 9.731510703265112,
+              "avg_fill": 0.545140474018769,
+              "avg_capture": 0.6268510003345584,
+              "unfilled_chase_rate": 0.29939839169584676
+            },
+            {
+              "q": 0.4,
+              "threshold": 1.3498154166612015,
+              "avg_ret": 0.0007995879965690195,
+              "avg_bp": 7.995879965690195,
+              "avg_fill": 0.545140474018769,
+              "avg_capture": 0.7085615266503479,
+              "unfilled_chase_rate": 0.5987967833916935
+            },
+            {
+              "q": 0.5,
+              "threshold": 1.547346006631027,
+              "avg_ret": 0.0006969379027619251,
+              "avg_bp": 6.969379027619251,
+              "avg_fill": 0.545140474018769,
+              "avg_capture": 0.680140474018769,
+              "unfilled_chase_rate": 0.4946582123670511
+            },
+            {
+              "q": 0.6,
+              "threshold": 1.6938236725020672,
+              "avg_ret": 0.0006679877774813725,
+              "avg_bp": 6.679877774813725,
+              "avg_fill": 0.545140474018769,
+              "avg_capture": 0.6552720529661373,
+              "unfilled_chase_rate": 0.4035369627204891
+            }
+          ]
+        },
+        "test_selective_avg_bp": 6.575861882173601,
+        "test_selective_unfilled_chase_rate": 0.08489323682382564
+      },
+      {
+        "year": 2025,
+        "trades": 41,
+        "vol_threshold": 0.016561641615013955,
+        "gating": {
+          "selected_q": 0.9,
+          "selected_threshold": 2.663785278302714,
+          "train_avg_ret": 0.0010270385870785378,
+          "train_avg_bp": 10.270385870785377,
+          "train_avg_fill": 0.5445947611928448,
+          "train_avg_capture": 0.572145781601008,
+          "train_unfilled_chase_rate": 0.10082968625308952,
+          "selection_mode": "argmax_train_avg_ret",
+          "leaderboard": [
+            {
+              "q": 0.9,
+              "threshold": 2.663785278302714,
+              "avg_ret": 0.0010270385870785378,
+              "avg_bp": 10.270385870785377,
+              "avg_fill": 0.5445947611928448,
+              "avg_capture": 0.572145781601008,
+              "unfilled_chase_rate": 0.10082968625308952
+            },
+            {
+              "q": 0.8,
+              "threshold": 2.0658942449937614,
+              "avg_ret": 0.0008612774529393301,
+              "avg_bp": 8.6127745293933,
+              "avg_fill": 0.5445947611928448,
+              "avg_capture": 0.599749670361898,
+              "unfilled_chase_rate": 0.20185285715172627
+            },
+            {
+              "q": 0.7,
+              "threshold": 1.8295231022449063,
+              "avg_ret": 0.0008187725516850895,
+              "avg_bp": 8.187725516850895,
+              "avg_fill": 0.5445947611928448,
+              "avg_capture": 0.6254639560761837,
+              "unfilled_chase_rate": 0.29596056432127654
+            },
+            {
+              "q": 0.6,
+              "threshold": 1.663286287807642,
+              "avg_ret": 0.0006887589464392145,
+              "avg_bp": 6.8875894643921445,
+              "avg_fill": 0.5445947611928448,
+              "avg_capture": 0.6530149764843469,
+              "unfilled_chase_rate": 0.396790250574366
+            },
+            {
+              "q": 0.5,
+              "threshold": 1.515065896613179,
+              "avg_ret": 0.0006360474257048273,
+              "avg_bp": 6.360474257048273,
+              "avg_fill": 0.5445947611928448,
+              "avg_capture": 0.6812173561609304,
+              "unfilled_chase_rate": 0.5000037451111368
+            },
+            {
+              "q": 0.4,
+              "threshold": 1.3286063543666664,
+              "avg_ret": 0.00036824779840806166,
+              "avg_bp": 3.6824779840806166,
+              "avg_fill": 0.5445947611928448,
+              "avg_capture": 0.7072010886099593,
+              "unfilled_chase_rate": 0.5950975583966711
+            }
+          ]
+        },
+        "test_selective_avg_bp": 8.016518787214777,
+        "test_selective_unfilled_chase_rate": 0.07654967321652448
+      },
+      {
+        "year": 2026,
+        "trades": 18,
+        "vol_threshold": 0.01621893493242357,
+        "gating": {
+          "selected_q": 0.9,
+          "selected_threshold": 2.6387679161726196,
+          "train_avg_ret": 0.000454801422369483,
+          "train_avg_bp": 4.54801422369483,
+          "train_avg_fill": 0.5387564572323026,
+          "train_avg_capture": 0.5664308876111238,
+          "train_unfilled_chase_rate": 0.09999934168097119,
+          "selection_mode": "argmax_train_avg_ret",
+          "leaderboard": [
+            {
+              "q": 0.9,
+              "threshold": 2.6387679161726196,
+              "avg_ret": 0.000454801422369483,
+              "avg_bp": 4.54801422369483,
+              "avg_fill": 0.5387564572323026,
+              "avg_capture": 0.5664308876111238,
+              "unfilled_chase_rate": 0.09999934168097119
+            },
+            {
+              "q": 0.7,
+              "threshold": 1.8441706289043909,
+              "avg_ret": 0.00029111248676972923,
+              "avg_bp": 2.9111248676972923,
+              "avg_fill": 0.5387564572323026,
+              "avg_capture": 0.6227836033570922,
+              "unfilled_chase_rate": 0.3036253747878459
+            },
+            {
+              "q": 0.8,
+              "threshold": 2.1516292355159248,
+              "avg_ret": 0.0002368407439135687,
+              "avg_bp": 2.368407439135687,
+              "avg_fill": 0.5387564572323026,
+              "avg_capture": 0.5943345413013902,
+              "unfilled_chase_rate": 0.2008269634720908
+            },
+            {
+              "q": 0.6,
+              "threshold": 1.6720715049579944,
+              "avg_ret": 0.00020149011488540726,
+              "avg_bp": 2.0149011488540727,
+              "avg_fill": 0.5387564572323026,
+              "avg_capture": 0.6487927776690188,
+              "unfilled_chase_rate": 0.397607446803634
+            },
+            {
+              "q": 0.5,
+              "threshold": 1.5406866062205058,
+              "avg_ret": 6.26612401471283e-05,
+              "avg_bp": 0.626612401471283,
+              "avg_fill": 0.5387564572323026,
+              "avg_capture": 0.677105715467495,
+              "unfilled_chase_rate": 0.49991398399865544
+            },
+            {
+              "q": 0.4,
+              "threshold": 1.382535090204751,
+              "avg_ret": 3.0702590727027805e-05,
+              "avg_bp": 0.30702590727027806,
+              "avg_fill": 0.5387564572323026,
+              "avg_capture": 0.7052831865687449,
+              "unfilled_chase_rate": 0.6017310231134315
+            }
+          ]
+        },
+        "test_selective_avg_bp": -19.49884064731591,
+        "test_selective_unfilled_chase_rate": 0.2222222222222222
+      }
+    ]
+  },
+  "scenarios": {
+    "taker_taker": {
+      "label": "Always taker",
+      "summary": {
+        "n": 118,
+        "avg": 0.00014517325575028717,
+        "avg_bp": 1.4517325575028717,
+        "win_rate": 0.5,
+        "equity": 0.9928224258608347,
+        "median_bp": -3.6493086185064882,
+        "p10_bp": -198.6048087729241,
+        "p90_bp": 175.45176722079884
+      },
+      "bootstrap_stationary": {
+        "mean": 0.00014517325575028717,
+        "ci95_low": -0.002759019383882452,
+        "ci95_high": 0.002970565739149855,
+        "p_gt_0": 0.5424,
+        "avg_block_len": 5,
+        "restart_p": 0.2
+      },
+      "fill_stats": {
+        "avg_fill_prob": 1.0,
+        "expected_skip_fraction": 0.0,
+        "avg_gross_capture": 1.0,
+        "unfilled_chase_rate": 0.0
+      }
+    },
+    "maker_first_always_chase": {
+      "label": "Maker-first, always chase",
+      "summary": {
+        "n": 118,
+        "avg": -0.00047618731662642954,
+        "avg_bp": -4.761873166264295,
+        "win_rate": 0.4830508474576271,
+        "equity": 0.9298300251168685,
+        "median_bp": -7.44293567957387,
+        "p10_bp": -168.63672881108926,
+        "p90_bp": 138.17466953572918
+      },
+      "bootstrap_stationary": {
+        "mean": -0.00047618731662642954,
+        "ci95_low": -0.002820881296135441,
+        "ci95_high": 0.0017422070083740488,
+        "p_gt_0": 0.354,
+        "avg_block_len": 5,
+        "restart_p": 0.2
+      },
+      "fill_stats": {
+        "avg_fill_prob": 0.536314602085864,
+        "expected_skip_fraction": 0.463685397914136,
+        "avg_gross_capture": 0.8145258408343456,
+        "unfilled_chase_rate": 1.0
+      }
+    },
+    "maker_first_strength_gated": {
+      "label": "Maker-first, selective chase (WF tuned)",
+      "summary": {
+        "n": 118,
+        "avg": 0.0003104372851107322,
+        "avg_bp": 3.104372851107322,
+        "win_rate": 0.5169491525423728,
+        "equity": 1.0273758227537162,
+        "median_bp": 2.183668764680944,
+        "p10_bp": -111.55070022340112,
+        "p90_bp": 108.18661010342258
+      },
+      "bootstrap_stationary": {
+        "mean": 0.0003104372851107322,
+        "ci95_low": -0.0014571626743358126,
+        "ci95_high": 0.001987094067836806,
+        "p_gt_0": 0.6424,
+        "avg_block_len": 5,
+        "restart_p": 0.2
+      },
+      "fill_stats": {
+        "avg_fill_prob": 0.536314602085864,
+        "expected_skip_fraction": 0.463685397914136,
+        "avg_gross_capture": 0.5645605836331778,
+        "unfilled_chase_rate": 0.10152710463594762
+      }
+    },
+    "maker_only_passive": {
+      "label": "Maker-only passive",
+      "summary": {
+        "n": 118,
+        "avg": 0.0005565593221298087,
+        "avg_bp": 5.565593221298087,
+        "win_rate": 0.5169491525423728,
+        "equity": 1.0601284770581552,
+        "median_bp": 2.183668764680944,
+        "p10_bp": -104.56124766461036,
+        "p90_bp": 101.12425613917526
+      },
+      "bootstrap_stationary": {
+        "mean": 0.0005565593221298087,
+        "ci95_low": -0.0010005653676760473,
+        "ci95_high": 0.001993948385445218,
+        "p_gt_0": 0.7652,
+        "avg_block_len": 5,
+        "restart_p": 0.2
+      },
+      "fill_stats": {
+        "avg_fill_prob": 0.536314602085864,
+        "expected_skip_fraction": 0.463685397914136,
+        "avg_gross_capture": 0.536314602085864,
+        "unfilled_chase_rate": 0.0
+      }
+    }
+  }
+}
