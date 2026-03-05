@@ -1,0 +1,376 @@
+{
+  "meta": {
+    "generated_utc": "2026-03-05T20:05:19.804156+00:00",
+    "sample_start_utc": "2023-03-21T16:00:00+00:00",
+    "sample_end_utc": "2026-03-04T00:00:00+00:00",
+    "signal": {
+      "z_threshold": 1.0,
+      "vol_q": 0.75
+    },
+    "walkforward_oos_years": [
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "execution": {
+      "quote_dist": 0.0006,
+      "life_min": 5,
+      "fill_cost_rt": 0.0007,
+      "chase_cost_rt": 0.001,
+      "taker_cost_rt": 0.001
+    },
+    "feature": "mom5 = P_t / P_{t-5m} - 1",
+    "bootstrap_iters": 5000,
+    "avg_block_len": 5
+  },
+  "counts": {
+    "rows_8h_total": 4575,
+    "signals_oos_selected": 118,
+    "minute_enriched": 118,
+    "dropped_missing_minute_data": 0,
+    "yearly_trade_counts": [
+      {
+        "year": 2023,
+        "trades": 1,
+        "vol_threshold": 0.020560081843009625
+      },
+      {
+        "year": 2024,
+        "trades": 58,
+        "vol_threshold": 0.016976037849726802
+      },
+      {
+        "year": 2025,
+        "trades": 41,
+        "vol_threshold": 0.016561641615013955
+      },
+      {
+        "year": 2026,
+        "trades": 18,
+        "vol_threshold": 0.01621893493242357
+      }
+    ]
+  },
+  "global_adverse_diagnostics": {
+    "maker_fill_rate": 0.711864406779661,
+    "avg_post_fill_drift_3m_bp": -3.647315183500987,
+    "maker_minus_taker_avg_bp": 3.1624518513289277
+  },
+  "maker_minus_taker_by_mom_decile": [
+    {
+      "decile": 1,
+      "mom5_lo": -0.0044904329887350825,
+      "mom5_hi": -0.002257743228727049,
+      "n": 12,
+      "maker_minus_taker_bp": -1.9500286742364128,
+      "maker_bp": -149.7611224458151,
+      "taker_bp": -147.8110937715787
+    },
+    {
+      "decile": 2,
+      "mom5_lo": -0.002257743228727049,
+      "mom5_hi": -0.0013571081309665888,
+      "n": 12,
+      "maker_minus_taker_bp": 3.3903304399682934,
+      "maker_bp": 147.14700828581144,
+      "taker_bp": 143.75667784584314
+    },
+    {
+      "decile": 3,
+      "mom5_lo": -0.0013571081309665888,
+      "mom5_hi": -0.0010129290376384434,
+      "n": 12,
+      "maker_minus_taker_bp": 4.790666980520304,
+      "maker_bp": -2.6406142481546446,
+      "taker_bp": -7.431281228674949
+    },
+    {
+      "decile": 4,
+      "mom5_lo": -0.0010129290376384434,
+      "mom5_hi": -0.0005644834672163811,
+      "n": 11,
+      "maker_minus_taker_bp": -2.2073916100230435,
+      "maker_bp": 22.851748468550596,
+      "taker_bp": 25.059140078573638
+    },
+    {
+      "decile": 5,
+      "mom5_lo": -0.0005644834672163811,
+      "mom5_hi": -0.00026659083924968074,
+      "n": 12,
+      "maker_minus_taker_bp": 4.883171743558674,
+      "maker_bp": -4.316068828037942,
+      "taker_bp": -9.199240571596615
+    },
+    {
+      "decile": 6,
+      "mom5_lo": -0.00026659083924968074,
+      "mom5_hi": -2.858320255785245e-05,
+      "n": 12,
+      "maker_minus_taker_bp": 4.661238804478397,
+      "maker_bp": -6.174095420419719,
+      "taker_bp": -10.835334224898116
+    },
+    {
+      "decile": 7,
+      "mom5_lo": -2.858320255785245e-05,
+      "mom5_hi": 0.00024247753669091025,
+      "n": 11,
+      "maker_minus_taker_bp": 3.185805402998166,
+      "maker_bp": -75.77191388485953,
+      "taker_bp": -78.95771928785769
+    },
+    {
+      "decile": 8,
+      "mom5_lo": 0.00024247753669091025,
+      "mom5_hi": 0.0007105417625066677,
+      "n": 12,
+      "maker_minus_taker_bp": 3.1314551645897115,
+      "maker_bp": 42.28614707151196,
+      "taker_bp": 39.154691906922245
+    },
+    {
+      "decile": 9,
+      "mom5_lo": 0.0007105417625066677,
+      "mom5_hi": 0.001191973460685669,
+      "n": 12,
+      "maker_minus_taker_bp": 3.2554755391481938,
+      "maker_bp": 104.6397664643592,
+      "taker_bp": 101.384290925211
+    },
+    {
+      "decile": 10,
+      "mom5_lo": 0.001191973460685669,
+      "mom5_hi": 0.003224755109858979,
+      "n": 12,
+      "maker_minus_taker_bp": 8.0382538964801,
+      "maker_bp": 98.67659887550303,
+      "taker_bp": 90.63834497902292
+    }
+  ],
+  "walkforward_selection": [
+    {
+      "year": 2023,
+      "trades": 1,
+      "threshold_policy": {
+        "selection_mode": "fallback_low_data",
+        "theta": -1000000000.0,
+        "theta_bp": -10000000000000.0,
+        "test_maker_usage": 1.0,
+        "test_mean_bp": 22.799372238778258
+      },
+      "state_policy": {
+        "selection_mode": "fallback_low_data",
+        "q1": -0.0012109979898297096,
+        "q2": -0.0012109979898297096,
+        "actions": {
+          "low_mom": "maker",
+          "mid_mom": "maker",
+          "high_mom": "maker"
+        },
+        "test_maker_usage": 1.0,
+        "test_mean_bp": 22.799372238778258
+      },
+      "test_baselines_mean_bp": {
+        "always_taker": 13.781476535433047,
+        "maker_fixed": 22.799372238778258
+      },
+      "test_adverse_diag": {
+        "fill_rate": 1.0,
+        "avg_post_fill_drift_3m_bp": 6.062856454085441
+      }
+    },
+    {
+      "year": 2024,
+      "trades": 58,
+      "threshold_policy": {
+        "selection_mode": "fallback_low_data",
+        "theta": -1000000000.0,
+        "theta_bp": -10000000000000.0,
+        "test_maker_usage": 1.0,
+        "test_mean_bp": 20.204299205125732
+      },
+      "state_policy": {
+        "selection_mode": "fallback_low_data",
+        "q1": -0.0006274805620228863,
+        "q2": 0.0002058463634626584,
+        "actions": {
+          "low_mom": "maker",
+          "mid_mom": "maker",
+          "high_mom": "maker"
+        },
+        "test_maker_usage": 1.0,
+        "test_mean_bp": 20.204299205125732
+      },
+      "test_baselines_mean_bp": {
+        "always_taker": 18.026955708763484,
+        "maker_fixed": 20.204299205125732
+      },
+      "test_adverse_diag": {
+        "fill_rate": 0.6379310344827587,
+        "avg_post_fill_drift_3m_bp": -0.8367884423482613
+      }
+    },
+    {
+      "year": 2025,
+      "trades": 41,
+      "threshold_policy": {
+        "selection_mode": "argmax_train_mean",
+        "theta": -0.0029974454088816495,
+        "theta_bp": -29.974454088816493,
+        "test_maker_usage": 1.0,
+        "test_mean_bp": 24.326912018130788
+      },
+      "state_policy": {
+        "selection_mode": "argmax_per_state_train_mean",
+        "q1": -0.0006813305970975182,
+        "q2": 0.0001785956389159791,
+        "actions": {
+          "low_mom": "taker",
+          "mid_mom": "maker",
+          "high_mom": "maker"
+        },
+        "test_maker_usage": 0.5853658536585366,
+        "test_mean_bp": 24.53845427542535
+      },
+      "test_baselines_mean_bp": {
+        "always_taker": 21.89118197801215,
+        "maker_fixed": 24.326912018130788
+      },
+      "test_adverse_diag": {
+        "fill_rate": 0.7317073170731707,
+        "avg_post_fill_drift_3m_bp": -5.533500860211205
+      }
+    },
+    {
+      "year": 2026,
+      "trades": 18,
+      "threshold_policy": {
+        "selection_mode": "argmax_train_mean",
+        "theta": -0.0026354233822977135,
+        "theta_bp": -26.354233822977136,
+        "test_maker_usage": 0.8333333333333334,
+        "test_mean_bp": -2.3454393983818744
+      },
+      "state_policy": {
+        "selection_mode": "argmax_per_state_train_mean",
+        "q1": -0.0007644905352889309,
+        "q2": 0.00015621044247549065,
+        "actions": {
+          "low_mom": "taker",
+          "mid_mom": "maker",
+          "high_mom": "maker"
+        },
+        "test_maker_usage": 0.6111111111111112,
+        "test_mean_bp": -3.857412993908132
+      },
+      "test_baselines_mean_bp": {
+        "always_taker": -8.549059428962574,
+        "maker_fixed": -0.882361188985142
+      },
+      "test_adverse_diag": {
+        "fill_rate": 0.8888888888888888,
+        "avg_post_fill_drift_3m_bp": -7.216945855934159
+      }
+    }
+  ],
+  "scenarios": {
+    "always_taker": {
+      "label": "Always taker",
+      "summary": {
+        "n": 118,
+        "avg": 0.0015279663551024465,
+        "avg_bp": 15.279663551024466,
+        "win_rate": 0.559322033898305,
+        "equity": 1.1692728271963808,
+        "median_bp": 9.955088594601088,
+        "p10_bp": -184.87118531611551,
+        "p90_bp": 188.9780588923255
+      },
+      "bootstrap_stationary": {
+        "mean": 0.0015279663551024465,
+        "ci95_low": -0.0012784879094262752,
+        "ci95_high": 0.004257799083966966,
+        "p_gt_0": 0.8586,
+        "avg_block_len": 5,
+        "restart_p": 0.2
+      },
+      "execution_stats": {
+        "maker_usage_rate": 0.0
+      }
+    },
+    "maker_fixed": {
+      "label": "Maker-first fixed (6 bps, 5m)",
+      "summary": {
+        "n": 118,
+        "avg": 0.001844211540235339,
+        "avg_bp": 18.44211540235339,
+        "win_rate": 0.5508474576271186,
+        "equity": 1.213756399886173,
+        "median_bp": 12.250071120457624,
+        "p10_bp": -175.97279951582505,
+        "p90_bp": 198.10129098491737
+      },
+      "bootstrap_stationary": {
+        "mean": 0.001844211540235339,
+        "ci95_low": -0.0009940881443166797,
+        "ci95_high": 0.004512149848666105,
+        "p_gt_0": 0.8942,
+        "avg_block_len": 5,
+        "restart_p": 0.2
+      },
+      "execution_stats": {
+        "maker_usage_rate": 1.0
+      }
+    },
+    "maker_mom_threshold_wf": {
+      "label": "Maker gated by mom5 threshold (WF)",
+      "summary": {
+        "n": 118,
+        "avg": 0.0018218933980581008,
+        "avg_bp": 18.218933980581006,
+        "win_rate": 0.5508474576271186,
+        "equity": 1.2104370437314005,
+        "median_bp": 11.939887071948034,
+        "p10_bp": -175.97279951582505,
+        "p90_bp": 198.10129098491737
+      },
+      "bootstrap_stationary": {
+        "mean": 0.0018218933980581008,
+        "ci95_low": -0.0009818982278461568,
+        "ci95_high": 0.004564317813420242,
+        "p_gt_0": 0.9054,
+        "avg_block_len": 5,
+        "restart_p": 0.2
+      },
+      "execution_stats": {
+        "maker_usage_rate": 0.9745762711864406
+      }
+    },
+    "maker_mom_state_wf": {
+      "label": "Maker gated by mom5 state map (WF)",
+      "summary": {
+        "n": 118,
+        "avg": 0.001806179591134037,
+        "avg_bp": 18.061795911340372,
+        "win_rate": 0.559322033898305,
+        "equity": 1.2079202464657548,
+        "median_bp": 11.939887071948034,
+        "p10_bp": -178.6423017078701,
+        "p90_bp": 195.36239045722786
+      },
+      "bootstrap_stationary": {
+        "mean": 0.001806179591134037,
+        "ci95_low": -0.0010576974936284498,
+        "ci95_high": 0.004578356559238118,
+        "p_gt_0": 0.8938,
+        "avg_block_len": 5,
+        "restart_p": 0.2
+      },
+      "execution_stats": {
+        "maker_usage_rate": 0.7966101694915254
+      }
+    }
+  }
+}
