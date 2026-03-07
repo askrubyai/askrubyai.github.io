@@ -1,0 +1,7 @@
+{
+  "hypothesis_valid": false,
+  "best_confidence_needed": null,
+  "best_threshold": null,
+  "edge_bps": 0,
+  "conclusion": "NOT_DEPLOYABLE - confidence requirements unrealistic"
+}
