@@ -1,0 +1,99 @@
+---
+title: "Day 26: Lifetime Tuning by Regime"
+date: "2026-03-08"
+description: "Can adapting order lifetime based on volatility/volume regimes improve maker execution?"
+tags: ["quant", "backtest", "maker-orders", "lifetime"]
+---
+
+## Summary
+
+**Result: NOT DEPLOYABLE** — Marginal improvement, adaptive doesn't help.
+
+| Strategy | Expected PnL | Improvement |
+|----------|-------------|-------------|
+| Fixed 5min | 6.39 bps | baseline |
+| Fixed 10min | 7.91 bps | +1.52 bps |
+| **Fixed 15min** | **8.37 bps** | **+1.98 bps** |
+| Vol-adaptive | 7.57 bps | +1.18 bps |
+
+**Verdict**: Longer lifetime helps marginally (+0.46 bps from 10min→15min), but adaptive regime-switching doesn't add value.
+
+---
+
+## The Question
+
+We've optimized quote distance (Day 25). Now: does **order lifetime** need to adapt to market conditions?
+
+- **High volatility**: market moves fast, shorter lifetime reduces adverse selection exposure
+- **Low volatility**: stable market, longer lifetime improves fill rate
+- **Volume**: higher volume = faster fills
+
+---
+
+## Methodology
+
+### Model
+
+Fill probability increases with:
+- Longer lifetime
+- Lower volatility
+- Higher volume ratio
+
+PnL calculation includes **real post-fill drift** (adverse selection cost):
+- If we get filled at time t, measure actual price movement in next N minutes
+- Longer lifetime = more time for price to move against us
+
+### Walk-Forward
+
+- **Data**: 5-minute candles, Jan 2022 – Dec 2024
+- **Train**: 2022-2023
+- **Test**: 2024-2025 (157,895 samples)
+- **Quote distance**: 10 bps (from Day 25 optimization)
+
+### Strategies Tested
+
+1. **Fixed 5min**: baseline
+2. **Fixed 10min**: longer lifetime
+3. **Fixed 15min**: longest tested
+4. **Vol-adaptive**: 5min (high vol) → 10min (mid) → 15min (low vol)
+
+---
+
+## Results
+
+| Strategy | Expected PnL | vs 5min | vs 10min |
+|----------|-------------|---------|----------|
+| Fixed 5min | 6.39 bps | — | - |
+| Fixed 10min | 7.91 bps | +1.52 bps | — |
+| **Fixed 15min** | **8.37 bps** | **+1.98 bps** | **+0.46 bps** |
+| Vol-adaptive | 7.57 bps | +1.18 bps | -0.34 bps |
+
+### Key Findings
+
+1. **Longer lifetime wins**: 15min > 10min > 5min
+   - More time = higher fill rate = more expected value
+   - Adverse selection cost doesn't fully offset fill gains
+
+2. **Adaptive doesn't help**: vol-adaptive actually underperforms fixed 10min
+   - Regime switching adds noise, not signal
+   - Volatility prediction at 5-15min horizon isn't reliable enough
+
+3. **Marginal improvement**: +0.46 bps (10min → 15min) is within noise
+   - Not statistically significant
+   - Not worth the complexity
+
+---
+
+## Conclusion
+
+**Not deployable.** The improvement from 10min → 15min lifetime is marginal (+0.46 bps) and within noise. Adaptive strategies actively hurt performance.
+
+**Practical recommendation**: Stick with 10-minute lifetime (or whatever current baseline is). The complexity of regime-adaptive lifetime doesn't pay off.
+
+---
+
+## Files
+
+- [research_full.py](research_full.py) — Full backtest with real drift
+- [backtest_results.csv](backtest_results.csv) — Results data
+- [verdict.json](verdict.json) — Decision record

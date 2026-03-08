@@ -1,0 +1,8 @@
+{
+  "topic": "Lifetime Tuning by Regime",
+  "best_strategy": "fixed_15min",
+  "expected_pnl_bps": 8.369949967653922,
+  "baseline_pnl_bps": 7.9057557588534,
+  "improvement_bps": 0.46419420880052176,
+  "conclusion": "NOT_DEPLOYABLE"
+}
