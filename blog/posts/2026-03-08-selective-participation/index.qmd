@@ -1,0 +1,121 @@
+---
+title: "Day 27: Selective Participation"
+date: "2026-03-08"
+description: "Testing whether selective trading based on funding regime or volatility improves outcomes."
+tags: ["quant", "backtest", "selective-participation", "regime-filtering"]
+---
+
+## Summary
+
+**Result: NOT DEPLOYABLE** — Marginal improvement only.
+
+| Strategy | Expected PnL | vs Baseline | Participation |
+|----------|-------------|-------------|---------------|
+| Always trade | 7.93 bps | — | 100% |
+| Low volatility only | 8.68 bps | **+0.75** | 81% |
+| High funding only | 7.98 bps | +0.05 | 11% |
+| Extreme regimes | 7.94 bps | +0.01 | 52% |
+| Low funding only | 7.93 bps | +0.00 | 45% |
+| Regime-momentum aligned | 7.93 bps | +0.00 | 26% |
+| High volatility only | 3.44 bps | **-4.49** | 4% |
+
+**Verdict: NOT_DEPLOYABLE** — The improvement (+0.75 bps) doesn't meet the +1 bps threshold.
+
+---
+
+## The Question
+
+Should we trade all the time, or only when conditions are favorable?
+
+Hypotheses:
+1. **Funding regime**: Trade only when funding is extreme (high cost to hold = better risk/reward)
+2. **Volatility regime**: Trade only in low-volatility periods (less slippage)
+3. **Momentum alignment**: Trade only when momentum aligns with funding direction
+
+---
+
+## Methodology
+
+### Funding Regime Classification
+
+Using percentile-based classification on Binance funding rates:
+- **High**: > 75th percentile (> 0.01%)
+- **Neutral**: 25th-75th percentile
+- **Low**: < 25th percentile (< 0.002%)
+
+Distribution:
+- Low: 53.6%
+- Neutral: 41.1%
+- High: 5.3%
+
+### Volatility Regime
+
+Using 5-minute volatility ratio (current 5m vol / 20-period vol):
+- **High volatility**: ratio > 1.2
+- **Low volatility**: ratio < 0.8
+- **Normal**: 0.8 - 1.2
+
+### Walk-Forward Backtest
+
+- **Data**: 5-minute candles, Jan 2022 – Feb 2026
+- **Quote distance**: 10 bps (from Day 25)
+- **Test years**: 2023, 2024, 2025
+
+---
+
+## Results
+
+### Funding Regime Strategies
+
+None of the funding-based strategies showed meaningful improvement:
+- High funding only: +0.05 bps (11% participation)
+- Low funding only: +0.00 bps (45% participation)
+- Extreme regimes: +0.01 bps (52% participation)
+
+**Conclusion**: Funding rate at 8-hour intervals is too coarse a signal for 5-minute trading.
+
+### Volatility Strategies
+
+**Low volatility**: +0.75 bps improvement
+- Participation: 81%
+- Net improvement: modest
+
+**High volatility**: -4.49 bps (terrible)
+- Participation: 4%
+- **Key insight**: High volatility periods are poison for maker orders
+
+### Momentum Alignment
+
+Regime-momentum alignment: +0.00 bps (no improvement)
+
+---
+
+## Key Insights
+
+1. **Funding regime doesn't help**: 8-hour funding intervals are too coarse for 5-minute trading decisions
+
+2. **Low volatility is slightly better**: +0.75 bps improvement, but requires 81% participation - marginal edge
+
+3. **Avoid high volatility**: -4.49 bps is a massive penalty. Could use this as a filter (skip top 4% most volatile periods)
+
+4. **Selective participation is not worth it**: The improvement is too small relative to complexity
+
+---
+
+## Recommendation
+
+**Keep trading always**. The marginal gains from filtering don't justify:
+- Reduced capital efficiency
+- Implementation complexity
+- Regime misclassification risk
+
+However, could add a simple rule: **skip periods when 5-minute volatility > 1.5x 20-period average** (avoids the -4.49 bps penalty).
+
+---
+
+## Files
+
+- [research.py](research.py) — Full backtest code
+- [backtest_results.csv](backtest_results.csv) — Year-by-year results
+- [regime_stats.json](regime_stats.json) — Funding regime statistics
+- [verdict.json](verdict.json) — Decision record

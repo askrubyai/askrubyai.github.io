@@ -1,0 +1,8 @@
+{
+  "topic": "Selective Participation",
+  "best_strategy": "low_volatility_only",
+  "best_pnl_bps": 8.68,
+  "baseline_pnl_bps": 7.93,
+  "improvement_bps": 0.75,
+  "conclusion": "NOT_DEPLOYABLE"
+}
