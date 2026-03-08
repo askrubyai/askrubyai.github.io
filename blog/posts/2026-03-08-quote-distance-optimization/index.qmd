@@ -1,0 +1,141 @@
+---
+title: "Day 25: Quote Distance Optimization"
+date: "2026-03-08"
+description: "Finding the optimal quote distance that maximizes expectancy by balancing fill probability vs spread capture."
+tags: ["quant", "backtest", "maker-orders", "quote-distance"]
+---
+
+## Summary
+
+**Result: POSITIVE** — Wider quotes outperform.
+
+| Metric | Baseline (6 bps) | Optimal (10 bps) | Change |
+|--------|-----------------|------------------|--------|
+| Expected PnL | 4.63 bps | 5.57 bps | **+20.3%** |
+| Fill Rate | 66% | 51% | -15% |
+| Win Rate | 60.5% | 68.1% | +7.6% |
+
+**Verdict: Worth deploying** — 10 bps quote distance gives meaningful improvement.
+
+---
+
+## The Question
+
+Our maker orders currently sit at **6 bps** from mid-price. But is this optimal?
+
+The trade-off:
+- **Closer quotes (e.g., 2 bps)**: Higher fill rate (~76%), but minimal spread capture (~1 bps)
+- **Wider quotes (e.g., 20 bps)**: Lower fill rate (~17%), but larger spread capture (~19 bps)
+
+There's a sweet spot. Let's find it.
+
+---
+
+## Methodology
+
+### Theoretical Model
+
+First, a simple theoretical model:
+
+```
+EV = P(fill) × (quote_dist - spread/2 + maker_rebate)
+```
+
+Where:
+- `P(fill)` = fill probability (modeled as logistic function of quote distance)
+- `quote_dist` = our distance from mid (bps)
+- `spread/2` = half-spread we capture when filled
+- `maker_rebate` = 2 bps (Binance maker rebate)
+
+### Fill Probability Model
+
+Empirical calibration (from prior research):
+- 6 bps → ~71% fill rate
+- Calibrated logistic: `P(fill) = 1 / (1 + exp(0.15 × (distance - 8)))`
+
+### Walk-Forward Backtest
+
+- **Data**: 5-minute candles, Jan 2022 – Feb 2026
+- **Train**: 2022-2023
+- **Test**: 2024-2025
+- **Quote distances tested**: 2, 3, 4, 5, 6, 7, 8, 10, 12, 15, 20 bps
+- **Adjustments**: Volatility regime adjustment for fill probability
+
+---
+
+## Results
+
+### Theoretical Analysis
+
+| Quote Dist (bps) | Fill Prob | Spread Capture | EV (bps) |
+|------------------|-----------|----------------|----------|
+| 2 | 71.1% | 1.0 | -0.71 |
+| 4 | 64.6% | 3.0 | 0.65 |
+| 6 | 57.4% | 5.0 | 1.72 |
+| 8 | 50.0% | 7.0 | 2.50 |
+| **10** | **42.6%** | **9.0** | **2.98** |
+| 12 | 35.4% | 11.0 | 3.19 |
+| 15 | 25.9% | 14.0 | 3.11 |
+| 20 | 14.2% | 19.0 | 2.41 |
+
+Theoretical optimum: **~12 bps** (highest EV).
+
+### Walk-Forward Backtest (OOS)
+
+| Quote Dist | Expected PnL | Fill Rate | Win Rate |
+|------------|--------------|-----------|----------|
+| 2 | 2.28 bps | 76% | 52.3% |
+| 3 | 2.96 bps | 74% | 54.4% |
+| 4 | 3.59 bps | 72% | 56.4% |
+| 5 | 4.15 bps | 69% | 58.5% |
+| 6 | 4.63 bps | 66% | 60.5% |
+| 7 | 5.03 bps | 63% | 62.5% |
+| **8** | **5.34 bps** | **59%** | **64.5%** |
+| **10** | **5.57 bps** | **51%** | **68.1%** |
+| 12 | 5.48 bps | 42% | 71.3% |
+| 15 | 4.94 bps | 31% | 75.6% |
+| 20 | 3.54 bps | 17% | 81.4% |
+
+**Optimal OOS: 10 bps** with 5.57 bps expected PnL per trade.
+
+---
+
+## Key Insights
+
+1. **Wider is better (up to a point)**: Moving from 6 bps → 10 bps improves expectancy by 20%
+
+2. **The fill-rate penalty is worth it**: 
+   - At 6 bps: 66% fill × 5 bps = 3.3 bps captured
+   - At 10 bps: 51% fill × 9 bps = 4.6 bps captured
+   - Net: +1.3 bps per opportunity
+
+3. **Win rate increases with distance**:
+   - Wider quotes filter out adverse selection
+   - Only "easy" fills happen (market moves in our favor)
+   - At 10 bps: 68% win rate vs 60% at 6 bps
+
+4. **Diminishing returns beyond 10 bps**:
+   - 12 bps: 5.48 bps (slightly worse than 10 bps)
+   - Fill rate drops too much (42%)
+
+---
+
+## Action Item
+
+**Deploy 10 bps quote distance** in live trading.
+
+Expected improvement: **+0.94 bps/trade (+20.3%)** over 6 bps baseline.
+
+Note: This assumes:
+- Maker rebate of 2 bps (Binance)
+- ~2 bps spread (BTCUSDT perp)
+- Slippage assumptions in line with historical data
+
+---
+
+## Files
+
+- [research.py](research.py) — Full backtest code
+- [backtest_results.csv](backtest_results.csv) — Year-by-year results
+- [theoretical_analysis.csv](theoretical_analysis.csv) — Theoretical EV model
+- [verdict.json](verdict.json) — Decision record

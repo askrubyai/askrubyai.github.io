@@ -1,0 +1,15 @@
+{
+  "topic": "Quote Distance Optimization",
+  "optimal_quote_dist_bps": 10,
+  "baseline_quote_dist_bps": 6,
+  "expected_pnl_baseline_bps": 4.63,
+  "expected_pnl_optimal_bps": 5.57,
+  "improvement_bps": 0.94,
+  "improvement_pct": 20.3,
+  "fill_rate_baseline": 0.66,
+  "fill_rate_optimal": 0.51,
+  "win_rate_baseline": 60.5,
+  "win_rate_optimal": 68.1,
+  "conclusion": "DEPLOYABLE",
+  "recommendation": "Deploy 10 bps quote distance in live trading"
+}
