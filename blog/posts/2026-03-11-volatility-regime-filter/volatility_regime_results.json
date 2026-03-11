@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "generated_utc": "2026-03-11T08:28:30.355535+00:00",
+    "sample_start": "2024-01-01T00:00:00+00:00",
+    "sample_end": "2026-02-01",
+    "hypothesis": "Skip mid-volatility regimes, trade low/high"
+  },
+  "results": {
+    "6": {
+      "summary": {
+        "all_trades": {
+          "n": 1551,
+          "avg_bps": 7.0,
+          "win_rate": 1.0,
+          "total_bps": 

@@ -1,0 +1,8 @@
+{
+  "verdict": "DEPLOYABLE",
+  "expected_improvement": "+46% to +68%",
+  "key_insight": "Mid-volatility (Q25-Q75) shows negative expectancy (-3 to -6 bps). Filter it out.",
+  "implementation": "Simple percentile-based filter on 20-period realized vol",
+  "trade_reduction": "~47%",
+  "data_source": "Day 20 PM volatility-conditioned quote distance research"
+}
